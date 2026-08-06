@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LinkVault</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#111111">
+    <link rel="icon" type="image/png" href="icon.png">
+</head>
+
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash">
+
+        <div class="splash-content">
+
+            <div class="logo">🔗</div>
+
+            <h1>LinkVault</h1>
+
+            <p>Save everything in one place</p>
+
+            <div class="loader"></div>
+
+        </div>
+
+    </div>
+
+    <!-- Main App -->
+    <div class="app">
+
+        <header>
+            <h1>🔗 LinkVault</h1>
+            <p>Save everything in one place</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h2 id="totalLinks">0</h2>
+                <p>Total Links</p>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="search" placeholder="🔍 Search your links...">
+        </div>
+
+        <div class="filter-buttons">
+
+            <button id="allBtn">
+                📂 All Links
+            </button>
+
+            <button id="favBtn">
+                ⭐ Favorites
+            </button>
+
+        </div>
+
+        <div id="linksContainer">
+            <!-- Cards will appear here -->
+        </div>
+
+        <button class="fab" id="openPopup">
+            +
+        </button>
+
+    </div>
+
+    <!-- Add Link Popup -->
+    <div class="popup" id="popup">
+
+        <div class="popup-content">
+
+            <h2>Add New Link</h2>
+
+            <input type="text" id="linkName" placeholder="Link Name">
+
+            <input type="url" id="linkURL" placeholder="Paste URL">
+
+            <textarea id="linkNote" placeholder="Add a note (optional)" rows="3"></textarea>
+
+            <select id="category">
+                <option>Shopping</option>
+                <option>Study</option>
+                <option>Work</option>
+                <option>Personal</option>
+            </select>
+
+            <label class="favorite-check">
+                <input type="checkbox" id="favorite">
+                ⭐ Add to Favorites
+            </label>
+
+            <button id="saveBtn">
+                Save Link
+            </button>
+
+            <button id="closePopup">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Edit Popup -->
+    <div class="popup" id="editPopup">
+
+        <div class="popup-content">
+
+            <h2>Edit Link</h2>
+
+            <input type="text" id="editName" placeholder="Link Name">
+
+            <input type="url" id="editURL" placeholder="Paste URL">
+
+            <select id="editCategory">
+                <option>Shopping</option>
+                <option>Study</option>
+                <option>Work</option>
+                <option>Personal</option>
+            </select>
+
+            <button id="updateBtn">
+                Update Link
+            </button>
+
+            <button id="closeEdit">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+
+        <button id="homeBtn">
+            🏠<br>Home
+        </button>
+
+        <button id="navFav">
+            ⭐<br>Favorites
+        </button>
+
+        <button id="settingsBtn">
+            ⚙️<br>Settings
+        </button>
+
+    </nav>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+
+    <!-- Service Worker -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("service-worker.js")
+                .then(() => console.log("Service Worker Registered"))
+                .catch(err => console.log(err));
+        }
+    </script>
+
+</body>
+
+</html>
