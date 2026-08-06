@@ -1114,4 +1114,111 @@ button:active {
 
     }
 
+}/* =========================
+   MOBILE AUTH PAGE FIX
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+}
+
+
+.box {
+
+    width:100%;
+
+    max-width:420px;
+
+    padding:30px;
+
+    border-radius:24px;
+
+}
+
+
+/* Bigger mobile inputs */
+
+input {
+
+    width:100%;
+
+    padding:16px;
+
+    font-size:17px;
+
+    border-radius:14px;
+
+}
+
+
+/* Bigger buttons */
+
+button {
+
+    width:100%;
+
+    padding:16px;
+
+    font-size:17px;
+
+    border-radius:14px;
+
+}
+
+
+h1 {
+
+    font-size:32px;
+
+}
+
+
+h2 {
+
+    font-size:24px;
+
+}
+
+
+/* Phone optimization */
+
+@media(max-width:600px){
+
+    .box {
+
+        width:100%;
+
+        padding:25px;
+
+    }
+
+
+    h1 {
+
+        font-size:30px;
+
+    }
+
+
+    h2 {
+
+        font-size:22px;
+
+    }
+
 }
