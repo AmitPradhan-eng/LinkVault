@@ -667,3 +667,75 @@ button:hover{
     overflow:hidden;
 
 }
+
+/* =========================
+   Mobile Optimization
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+
+    .app {
+        width: 100%;
+    }
+
+
+    header h1 {
+        font-size: 28px;
+    }
+
+
+    header p {
+        font-size: 15px;
+    }
+
+
+    .card {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+
+    .card h3 {
+        font-size: 18px;
+    }
+
+
+    .card p {
+        font-size: 15px;
+    }
+
+
+    button {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+
+    input,
+    textarea,
+    select {
+        font-size: 16px;
+        padding: 16px;
+    }
+
+
+    .fab {
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+        right: 20px;
+        bottom: 80px;
+    }
+
+
+    .bottom-nav button {
+        font-size: 15px;
+    }
+
+}
