@@ -15,6 +15,73 @@
 
 <body>
 
+    <!-- PRANK SUBSCRIPTION POPUP -->
+
+    <div id="prankOverlay" class="prank-overlay">
+
+        <div class="prank-card">
+
+            <div class="prank-icon">💎</div>
+
+            <div class="prank-badge">
+                PREMIUM REQUIRED
+            </div>
+
+            <h1>Unlock LinkVault Premium</h1>
+
+            <p class="prank-subtitle">
+                Your free access has expired.
+            </p>
+
+            <div class="price-box">
+                <span class="currency">₹</span>
+                <span class="price">99</span>
+                <span class="period">/ month</span>
+            </div>
+
+            <div class="premium-features">
+                <div>✨ Unlimited Link Storage</div>
+                <div>🔐 Private Space</div>
+                <div>⚡ Faster Access</div>
+                <div>☁️ Secure Cloud Backup</div>
+            </div>
+
+            <button id="upgradeBtn" class="upgrade-btn">
+                🚀 Upgrade Now
+            </button>
+
+            <p class="secure-text">
+                🔒 Secure & encrypted
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRANK REVEAL -->
+
+    <div id="prankReveal" class="prank-overlay">
+
+        <div class="reveal-card">
+
+            <div class="reveal-emoji">😂</div>
+
+            <h1>YOU GOT PRANKED!</h1>
+
+            <p>
+                Don't worry 😎<br>
+                LinkVault is still completely free.
+            </p>
+
+            <button id="enterLinkVault">
+                ❤️ Enter LinkVault
+            </button>
+
+        </div>
+
+    </div>
+
     <!-- Splash Screen -->
     <div id="splash">
 
@@ -164,7 +231,8 @@
     </script>
     <script type="module" src="script.js"></script>
 
-    <!-- Service Worker -->
+    <!-- Ser
+     vice Worker -->
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("service-worker.js")

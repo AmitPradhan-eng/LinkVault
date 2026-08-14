@@ -8,10 +8,102 @@ import {
     collection,
     addDoc,
     getDocs,
+    getDoc,
     deleteDoc,
     doc,
     updateDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+// =========================================
+// LINKVAULT PRANK MODE
+// =========================================
+
+async function checkPrankMode() {
+
+    const prankOverlay =
+        document.getElementById("prankOverlay");
+
+    const prankReveal =
+        document.getElementById("prankReveal");
+
+    const upgradeBtn =
+        document.getElementById("upgradeBtn");
+
+    const enterLinkVault =
+        document.getElementById("enterLinkVault");
+
+
+    try {
+
+        const configRef =
+            doc(db, "system", "config");
+
+
+        const configSnapshot =
+            await getDoc(configRef);
+
+
+        if (!configSnapshot.exists()) {
+
+            console.log("Prank config not found");
+
+            return;
+
+        }
+
+
+        const config =
+            configSnapshot.data();
+
+
+        console.log(
+            "🔥 Prank Mode:",
+            config.prankMode
+        );
+
+
+        if (config.prankMode === true) {
+
+            prankOverlay.style.display = "flex";
+
+            document.body.style.overflow = "hidden";
+
+
+            upgradeBtn.onclick = () => {
+
+                prankOverlay.style.display = "none";
+
+                prankReveal.style.display = "flex";
+
+            };
+
+
+            enterLinkVault.onclick = () => {
+
+                prankReveal.style.display = "none";
+
+                document.body.style.overflow = "";
+
+            };
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "❌ Prank Mode Error:",
+            error
+        );
+
+    }
+
+}
+
+
+// Start prank check
+checkPrankMode();
 
 
 // ===========================
