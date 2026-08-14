@@ -57,6 +57,8 @@
 
 // checkMaintenanceMode();
 
+console.log("🔥 MAINTENANCE JS IS RUNNING");
+
 console.log("🚧 MAINTENANCE JS LOADED");
 
 import { db } from "./firebase.js";
