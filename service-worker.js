@@ -1,55 +1,157 @@
-const cacheName = "linkvault-v2";
+// =========================================
+// LINKVAULT SERVICE WORKER
+// =========================================
 
-const assets = [
+const CACHE_NAME = "linkvault-v3";
+
+const ASSETS = [
     "./",
     "./index.html",
     "./style.css",
     "./script.js",
-    "./manifest.json"
+    "./firebase.js",
+    "./manifest.json",
+    "./icon.png"
 ];
 
 
-// Install Service Worker
+// =========================================
+// INSTALL
+// =========================================
 
 self.addEventListener("install", event => {
+
+    console.log("🔧 LinkVault Service Worker Installing...");
 
     event.waitUntil(
 
-        caches.open(cacheName)
-        .then(cache => {
+        caches.open(CACHE_NAME)
+            .then(cache => {
 
-            return cache.addAll(assets);
+                console.log("📦 Caching LinkVault assets");
 
-        })
+                return cache.addAll(ASSETS);
+
+            })
+            .then(() => {
+
+                console.log("✅ LinkVault Service Worker Installed");
+
+                return self.skipWaiting();
+
+            })
 
     );
 
 });
 
 
-// Load From Cache
+// =========================================
+// ACTIVATE
+// =========================================
+
+self.addEventListener("activate", event => {
+
+    console.log("🚀 LinkVault Service Worker Activated");
+
+    event.waitUntil(
+
+        caches.keys()
+            .then(cacheNames => {
+
+                return Promise.all(
+
+                    cacheNames
+                        .filter(cacheName => {
+
+                            return cacheName !== CACHE_NAME;
+
+                        })
+                        .map(cacheName => {
+
+                            console.log(
+                                "🗑 Removing old cache:",
+                                cacheName
+                            );
+
+                            return caches.delete(cacheName);
+
+                        })
+
+                );
+
+            })
+            .then(() => {
+
+                return self.clients.claim();
+
+            })
+
+    );
+
+});
+
+
+// =========================================
+// FETCH
+// =========================================
 
 self.addEventListener("fetch", event => {
 
+    const request = event.request;
+
+
+    // Only handle GET requests
+    if (request.method !== "GET") {
+
+        return;
+
+    }
+
+
     event.respondWith(
 
-        caches.match(event.request)
-        .then(response => {
+        fetch(request)
 
-            return response || fetch(event.request);
+            .then(response => {
 
-        })
+                // Save successful response in cache
+                if (
+                    response &&
+                    response.status === 200 &&
+                    response.type === "basic"
+                ) {
+
+                    const responseClone =
+                        response.clone();
+
+
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+
+                            cache.put(
+                                request,
+                                responseClone
+                            );
+
+                        });
+
+                }
+
+
+                return response;
+
+            })
+
+            .catch(() => {
+
+                // If internet unavailable,
+                // use cached version
+
+                return caches.match(request);
+
+            })
 
     );
 
-});
-
-self.addEventListener("install", event => {
-    console.log("LinkVault installed");
-});
-
-self.addEventListener("fetch", event => {
-    event.respondWith(
-        fetch(event.request)
-    );
 });

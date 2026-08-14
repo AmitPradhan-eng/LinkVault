@@ -77,6 +77,7 @@ async function checkPrankMode() {
             console.log("😈 PRANK IS ON");
 
             prankOverlay.style.display = "flex";
+            prankLoading.style.display = "none";
 
             document.body.style.overflow = "hidden";
 
