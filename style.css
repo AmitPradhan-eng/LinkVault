@@ -1232,7 +1232,7 @@ h2 {
     inset: 0;
     z-index: 100000;
 
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 
