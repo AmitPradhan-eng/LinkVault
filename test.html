@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Firestore Test</title>
+</head>
+
+<body>
+
+    <h2>Testing Firestore...</h2>
+
+    <script type="module">
+
+        import { db } from "./firebase.js";
+
+        import {
+            collection,
+            addDoc
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+        try {
+
+            await addDoc(collection(db, "test"), {
+
+                message: "Hello Firestore",
+
+                time: new Date()
+
+            });
+
+            alert("✅ Firestore Connected Successfully");
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+            alert(error.message);
+
+        }
+
+    </script>
+<script type="module" src="maintenance.js"></script>
+</body>
+
+</html>
