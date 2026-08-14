@@ -20,6 +20,9 @@ import {
 
 async function checkPrankMode() {
 
+    const prankLoading =
+        document.getElementById("prankLoading");
+
     const prankOverlay =
         document.getElementById("prankOverlay");
 
@@ -38,31 +41,34 @@ async function checkPrankMode() {
         const configRef =
             doc(db, "system", "config");
 
-
         const configSnapshot =
             await getDoc(configRef);
 
 
-        if (!configSnapshot.exists()) {
+        let prankEnabled = false;
 
-            console.log("Prank config not found");
 
-            return;
+        if (configSnapshot.exists()) {
+
+            const config =
+                configSnapshot.data();
+
+            prankEnabled =
+                config.prankMode === true;
+
+            console.log(
+                "🔥 Prank Mode:",
+                prankEnabled
+            );
 
         }
 
 
-        const config =
-            configSnapshot.data();
+        // =====================================
+        // PRANK ENABLED
+        // =====================================
 
-
-        console.log(
-            "🔥 Prank Mode:",
-            config.prankMode
-        );
-
-
-        if (config.prankMode === true) {
+        if (prankEnabled) {
 
             prankOverlay.style.display = "flex";
 
@@ -88,6 +94,14 @@ async function checkPrankMode() {
 
         }
 
+
+        // =====================================
+        // FINISHED CHECKING
+        // =====================================
+
+        prankLoading.style.display = "none";
+
+
     }
 
     catch (error) {
@@ -96,6 +110,9 @@ async function checkPrankMode() {
             "❌ Prank Mode Error:",
             error
         );
+
+        // Don't leave the loading screen stuck
+        prankLoading.style.display = "none";
 
     }
 

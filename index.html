@@ -11,9 +11,42 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#111111">
     <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        #prankLoading {
+            position: fixed;
+            inset: 0;
+            z-index: 200000;
+            background: #050816;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #prankLoading .loader-box {
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #prankLoading .loader-logo {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        #prankLoading p {
+            color: #94a3b8;
+        }
+    </style>
 </head>
 
 <body>
+    <div id="prankLoading">
+        <div class="loader-box">
+            <div class="loader-logo">🔗</div>
+            <h2>LinkVault</h2>
+            <p>Checking access...</p>
+        </div>
+    </div>
 
     <!-- PRANK SUBSCRIPTION POPUP -->
 
