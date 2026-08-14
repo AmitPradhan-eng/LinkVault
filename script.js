@@ -20,6 +20,8 @@ import {
 
 async function checkPrankMode() {
 
+    console.log("🚀 PRANK CHECK STARTED");
+
     const prankLoading =
         document.getElementById("prankLoading");
 
@@ -43,6 +45,8 @@ async function checkPrankMode() {
 
         const configSnapshot =
             await getDoc(configRef);
+
+            console.log("🔥 CONFIG:", configSnapshot.exists(), configSnapshot.data());
 
 
         let prankEnabled = false;
@@ -69,6 +73,8 @@ async function checkPrankMode() {
         // =====================================
 
         if (prankEnabled) {
+
+            console.log("😈 PRANK IS ON");
 
             prankOverlay.style.display = "flex";
 
