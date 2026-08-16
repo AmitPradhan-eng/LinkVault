@@ -423,6 +423,8 @@ window.setPin = async function () {
         // SAVE PIN TO FIRESTORE
         // =================================
 
+        const pinHash = await hashPIN(pin);
+
         await setDoc(
             doc(
                 db,
@@ -430,16 +432,9 @@ window.setPin = async function () {
                 user.uid
             ),
             {
-
-                privatePin:
-                    pin,
-
-                email:
-                    user.email,
-
-                updatedAt:
-                    new Date()
-
+                pinHash: pinHash,
+                email: user.email,
+                updatedAt: new Date()
             },
             {
                 merge: true
@@ -733,20 +728,18 @@ window.verifyForgotPin = async function () {
 // FORGOT PIN - CREATE NEW PIN
 // =====================================
 
-window.resetPin = function () {
+window.resetPin = async function () {
 
     const newPin =
-        document.getElementById("newPin").value;
+        document.getElementById("newPin").value.trim();
 
     const confirmNewPin =
-        document.getElementById("confirmNewPin").value;
+        document.getElementById("confirmNewPin").value.trim();
 
 
     if (!/^\d{4}$/.test(newPin)) {
 
-        alert(
-            "PIN must be exactly 4 digits."
-        );
+        alert("PIN must be exactly 4 digits.");
 
         return;
 
@@ -755,33 +748,77 @@ window.resetPin = function () {
 
     if (newPin !== confirmNewPin) {
 
-        alert(
-            "PIN does not match."
-        );
+        alert("PIN does not match.");
 
         return;
 
     }
 
 
-    localStorage.setItem(
-        "userPin",
-        newPin
-    );
+    const user = auth.currentUser;
 
 
-    sessionStorage.setItem(
-        "pinUnlocked",
-        "true"
-    );
+    if (!user) {
+
+        alert("Please login again.");
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
 
 
-    alert(
-        "✅ New PIN created successfully!"
-    );
+    try {
+
+        const pinHash =
+            await hashPIN(newPin);
 
 
-    window.location.href =
-        "index.html";
+        await setDoc(
+            doc(
+                db,
+                "users",
+                user.uid
+            ),
+            {
+                pinHash: pinHash,
+                updatedAt: new Date()
+            },
+            {
+                merge: true
+            }
+        );
+
+
+        sessionStorage.setItem(
+            "pinUnlocked",
+            "true"
+        );
+
+
+        alert(
+            "✅ New PIN created successfully!"
+        );
+
+
+        window.location.href =
+            "index.html";
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ PIN reset error:",
+            error
+        );
+
+
+        alert(
+            "Unable to reset PIN: " +
+            error.message
+        );
+
+    }
 
 };

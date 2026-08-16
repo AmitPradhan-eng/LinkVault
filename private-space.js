@@ -1,5 +1,6 @@
 // ==========================================
 // LINKVAULT 2.0 — PRIVATE SPACE
+// COMPLETE CLEAN VERSION
 // ==========================================
 
 import {
@@ -25,6 +26,94 @@ let editingPrivateId = null;
 
 
 // ==========================================
+// DOM ELEMENTS
+// ==========================================
+const privateBackBtn =
+    document.getElementById("privateBackBtn");
+
+const privateLockScreen =
+    document.getElementById("privateLockScreen");
+
+const privateContent =
+    document.getElementById("privateContent");
+
+const privateUnlockBtn =
+    document.getElementById("privateUnlockBtn");
+
+const privatePinError =
+    document.getElementById("privatePinError");
+
+const privatePinInputs =
+    document.querySelectorAll(".private-pin");
+
+const privateAddBtn =
+    document.getElementById("privateAddBtn");
+
+const privatePopup =
+    document.getElementById("privatePopup");
+
+const privateCloseBtn =
+    document.getElementById("privateCloseBtn");
+
+const privateSaveBtn =
+    document.getElementById("privateSaveBtn");
+
+const privateLinksContainer =
+    document.getElementById("privateLinksContainer");
+
+// ==========================================
+// BACK TO DASHBOARD
+// ==========================================
+
+if (privateBackBtn) {
+
+    privateBackBtn.addEventListener(
+        "click",
+        () => {
+
+            window.location.href = "index.html";
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// EDIT POPUP ELEMENTS
+// ==========================================
+
+const privateEditPopup =
+    document.getElementById("privateEditPopup");
+
+const privateUpdateBtn =
+    document.getElementById("privateUpdateBtn");
+
+const privateEditCloseBtn =
+    document.getElementById("privateEditCloseBtn");
+
+const editPrivateLinkName =
+    document.getElementById("editPrivateLinkName");
+
+const editPrivateLinkURL =
+    document.getElementById("editPrivateLinkURL");
+
+const editPrivateLinkNote =
+    document.getElementById("editPrivateLinkNote");
+
+
+// ==========================================
+// DEBUG
+// ==========================================
+
+console.log("🔐 Private Space module starting...");
+
+console.log("privateEditPopup:", privateEditPopup);
+console.log("privateUpdateBtn:", privateUpdateBtn);
+console.log("privateEditCloseBtn:", privateEditCloseBtn);
+
+
+// ==========================================
 // GET CURRENT USER
 // ==========================================
 
@@ -33,7 +122,11 @@ function getCurrentUser() {
     const user = auth.currentUser;
 
     if (!user) {
-        console.warn("Private Space: User not logged in");
+
+        console.warn(
+            "🔐 Private Space: Firebase user not ready."
+        );
+
         return null;
     }
 
@@ -42,14 +135,16 @@ function getCurrentUser() {
 
 
 // ==========================================
-// PRIVATE COLLECTION
+// PRIVATE FIRESTORE COLLECTION
 // ==========================================
 
 function privateCollection() {
 
     const user = getCurrentUser();
 
-    if (!user) return null;
+    if (!user) {
+        return null;
+    }
 
     return collection(
         db,
@@ -66,42 +161,78 @@ function privateCollection() {
 
 export async function loadPrivateLinks() {
 
-    const collectionRef = privateCollection();
+    const user = getCurrentUser();
 
-    if (!collectionRef) return [];
+    if (!user) {
 
-    try {
-
-        const snapshot = await getDocs(collectionRef);
+        console.warn(
+            "🔐 Cannot load private links: user unavailable."
+        );
 
         privateLinks = [];
 
-        snapshot.forEach((item) => {
+        return [];
+    }
 
-            privateLinks.push({
+
+    try {
+
+        const collectionRef =
+            collection(
+                db,
+                "users",
+                user.uid,
+                "privateLinks"
+            );
+
+
+        const snapshot =
+            await getDocs(collectionRef);
+
+
+        const loadedLinks = [];
+
+
+        snapshot.forEach(item => {
+
+            loadedLinks.push({
+
                 id: item.id,
+
                 ...item.data()
+
             });
 
         });
 
+
+        privateLinks =
+            loadedLinks;
+
+
         console.log(
-            "🔐 Private Space loaded:",
+            "🔐 Private links loaded:",
             privateLinks.length
         );
 
+
         return privateLinks;
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
-            "Private Space loading error:",
+            "❌ Private links loading error:",
             error
         );
+
+        privateLinks = [];
 
         return [];
 
     }
+
 }
 
 
@@ -111,61 +242,91 @@ export async function loadPrivateLinks() {
 
 export async function savePrivateLink(data) {
 
-    const collectionRef = privateCollection();
+    const user =
+        getCurrentUser();
 
-    if (!collectionRef) {
+
+    if (!user) {
 
         throw new Error(
-            "User is not authenticated"
+            "User is not authenticated."
         );
 
     }
 
+
     try {
+
+        const collectionRef =
+            collection(
+                db,
+                "users",
+                user.uid,
+                "privateLinks"
+            );
+
 
         const privateLink = {
 
-            name: data.name || "Untitled",
+            name:
+                data.name || "Untitled",
 
-            url: data.url || "",
+            url:
+                data.url || "",
 
-            note: data.note || "",
+            note:
+                data.note || "",
 
-            category: data.category || "Personal",
+            category:
+                data.category || "Personal",
 
-            favorite: Boolean(data.favorite),
+            favorite:
+                Boolean(data.favorite),
 
-            createdAt: serverTimestamp(),
+            createdAt:
+                serverTimestamp(),
 
-            updatedAt: serverTimestamp()
+            updatedAt:
+                serverTimestamp()
 
         };
 
-        const docRef = await addDoc(
-            collectionRef,
-            privateLink
-        );
+
+        const docRef =
+            await addDoc(
+                collectionRef,
+                privateLink
+            );
+
 
         console.log(
             "🔐 Private link saved:",
             docRef.id
         );
 
+
         return {
-            id: docRef.id,
+
+            id:
+                docRef.id,
+
             ...privateLink
+
         };
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
-            "Private Space save error:",
+            "❌ Private save error:",
             error
         );
 
         throw error;
 
     }
+
 }
 
 
@@ -175,44 +336,61 @@ export async function savePrivateLink(data) {
 
 export async function deletePrivateLink(id) {
 
-    const user = getCurrentUser();
+    const user =
+        getCurrentUser();
 
-    if (!user || !id) return;
+
+    if (!user || !id) {
+
+        throw new Error(
+            "User or link ID missing."
+        );
+
+    }
+
 
     try {
 
-        await deleteDoc(
+        const linkRef =
             doc(
                 db,
                 "users",
                 user.uid,
                 "privateLinks",
                 id
-            )
-        );
+            );
+
+
+        await deleteDoc(linkRef);
+
 
         privateLinks =
             privateLinks.filter(
                 link => link.id !== id
             );
 
+
         console.log(
             "🗑 Private link deleted:",
             id
         );
 
+
         return true;
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
-            "Private Space delete error:",
+            "❌ Private delete error:",
             error
         );
 
         throw error;
 
     }
+
 }
 
 
@@ -225,46 +403,65 @@ export async function updatePrivateLink(
     data
 ) {
 
-    const user = getCurrentUser();
+    const user =
+        getCurrentUser();
 
-    if (!user || !id) return;
+
+    if (!user || !id) {
+
+        throw new Error(
+            "User or link ID missing."
+        );
+
+    }
+
 
     try {
 
-        const linkRef = doc(
-            db,
-            "users",
-            user.uid,
-            "privateLinks",
-            id
-        );
+        const linkRef =
+            doc(
+                db,
+                "users",
+                user.uid,
+                "privateLinks",
+                id
+            );
+
+
+        const updatedData = {
+
+            name:
+                data.name || "Untitled",
+
+            url:
+                data.url || "",
+
+            note:
+                data.note || "",
+
+            category:
+                data.category || "Personal",
+
+            favorite:
+                Boolean(data.favorite),
+
+            updatedAt:
+                serverTimestamp()
+
+        };
+
 
         await updateDoc(
             linkRef,
-            {
-
-                name: data.name || "Untitled",
-
-                url: data.url || "",
-
-                note: data.note || "",
-
-                category:
-                    data.category || "Personal",
-
-                favorite:
-                    Boolean(data.favorite),
-
-                updatedAt:
-                    serverTimestamp()
-
-            }
+            updatedData
         );
+
 
         const index =
             privateLinks.findIndex(
                 link => link.id === id
             );
+
 
         if (index !== -1) {
 
@@ -272,29 +469,37 @@ export async function updatePrivateLink(
 
                 ...privateLinks[index],
 
-                ...data
+                ...updatedData,
+
+                updatedAt:
+                    privateLinks[index].updatedAt
 
             };
 
         }
+
 
         console.log(
             "✏️ Private link updated:",
             id
         );
 
+
         return true;
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
-            "Private Space update error:",
+            "❌ Private update error:",
             error
         );
 
         throw error;
 
     }
+
 }
 
 
@@ -302,46 +507,56 @@ export async function updatePrivateLink(
 // SEARCH PRIVATE LINKS
 // ==========================================
 
-export function searchPrivateLinks(query = "") {
+export function searchPrivateLinks(
+    query = ""
+) {
 
     const search =
-        query.trim().toLowerCase();
+        query
+            .trim()
+            .toLowerCase();
+
 
     if (!search) {
 
-        return [...privateLinks];
+        return [
+            ...privateLinks
+        ];
 
     }
 
-    return privateLinks.filter(link => {
 
-        return (
+    return privateLinks.filter(
+        link => {
 
-            (link.name || "")
-                .toLowerCase()
-                .includes(search)
+            return (
 
-            ||
+                (link.name || "")
+                    .toLowerCase()
+                    .includes(search)
 
-            (link.url || "")
-                .toLowerCase()
-                .includes(search)
+                ||
 
-            ||
+                (link.url || "")
+                    .toLowerCase()
+                    .includes(search)
 
-            (link.category || "")
-                .toLowerCase()
-                .includes(search)
+                ||
 
-            ||
+                (link.category || "")
+                    .toLowerCase()
+                    .includes(search)
 
-            (link.note || "")
-                .toLowerCase()
-                .includes(search)
+                ||
 
-        );
+                (link.note || "")
+                    .toLowerCase()
+                    .includes(search)
 
-    });
+            );
+
+        }
+    );
 
 }
 
@@ -353,14 +568,15 @@ export function searchPrivateLinks(query = "") {
 export function getPrivateFavorites() {
 
     return privateLinks.filter(
-        link => link.favorite === true
+        link =>
+            link.favorite === true
     );
 
 }
 
 
 // ==========================================
-// CATEGORY FILTER
+// CATEGORY
 // ==========================================
 
 export function getPrivateByCategory(
@@ -369,9 +585,12 @@ export function getPrivateByCategory(
 
     if (!category) {
 
-        return [...privateLinks];
+        return [
+            ...privateLinks
+        ];
 
     }
+
 
     return privateLinks.filter(
         link =>
@@ -392,38 +611,52 @@ export function getPrivateStats() {
     const today =
         new Date().toDateString();
 
+
     const todayLinks =
-        privateLinks.filter(link => {
+        privateLinks.filter(
+            link => {
 
-            if (!link.createdAt) return false;
+                if (!link.createdAt) {
+                    return false;
+                }
 
-            let date;
 
-            if (
-                typeof link.createdAt.toDate ===
-                "function"
-            ) {
+                let date;
 
-                date =
-                    link.createdAt.toDate();
 
-            } else {
+                if (
+                    typeof link.createdAt.toDate ===
+                    "function"
+                ) {
 
-                date =
-                    new Date(link.createdAt);
+                    date =
+                        link.createdAt.toDate();
+
+                }
+
+                else {
+
+                    date =
+                        new Date(
+                            link.createdAt
+                        );
+
+                }
+
+
+                return (
+                    date.toDateString() ===
+                    today
+                );
 
             }
+        );
 
-            return (
-                date.toDateString() ===
-                today
-            );
-
-        });
 
     return {
 
-        total: privateLinks.length,
+        total:
+            privateLinks.length,
 
         favorites:
             privateLinks.filter(
@@ -439,79 +672,69 @@ export function getPrivateStats() {
 
 
 // ==========================================
-// EXPORT STATE
+// GET PRIVATE LINKS
 // ==========================================
 
 export function getPrivateLinks() {
 
-    return [...privateLinks];
+    return [
+        ...privateLinks
+    ];
 
 }
 
 
 // ==========================================
-// PRIVATE SPACE READY
-// ==========================================
-
-console.log(
-    "🔐 Private Space module loaded"
-);
-
-// ==========================================
-// PRIVATE SPACE PIN UNLOCK
-// ==========================================
-
-const privateLockScreen =
-    document.getElementById("privateLockScreen");
-
-const privateContent =
-    document.getElementById("privateContent");
-
-const privateUnlockBtn =
-    document.getElementById("privateUnlockBtn");
-
-const privatePinError =
-    document.getElementById("privatePinError");
-
-const privatePinInputs =
-    document.querySelectorAll(".private-pin");
-
-
-// ==========================================
-// INITIAL STATE
+// PRIVATE LOCK
 // ==========================================
 
 function showPrivateLock() {
 
     if (privateLockScreen) {
-        privateLockScreen.style.display = "flex";
+
+        privateLockScreen.style.display =
+            "flex";
+
     }
 
+
     if (privateContent) {
-        privateContent.style.display = "none";
+
+        privateContent.style.display =
+            "none";
+
     }
 
 }
 
 
 // ==========================================
-// SHOW PRIVATE CONTENT
+// UNLOCK PRIVATE SPACE
 // ==========================================
 
 function unlockPrivateSpace() {
 
     if (privateLockScreen) {
-        privateLockScreen.style.display = "none";
+
+        privateLockScreen.style.display =
+            "none";
+
     }
 
+
     if (privateContent) {
-        privateContent.style.display = "block";
+
+        privateContent.style.display =
+            "block";
+
     }
+
 
     sessionStorage.setItem(
         "privatePinUnlocked",
         "true"
     );
+
 
     console.log(
         "🔓 Private Space unlocked"
@@ -521,7 +744,7 @@ function unlockPrivateSpace() {
 
 
 // ==========================================
-// CHECK EXISTING SESSION
+// INITIAL LOCK STATE
 // ==========================================
 
 if (
@@ -532,7 +755,9 @@ if (
 
     unlockPrivateSpace();
 
-} else {
+}
+
+else {
 
     showPrivateLock();
 
@@ -540,7 +765,7 @@ if (
 
 
 // ==========================================
-// AUTO MOVE BETWEEN PIN BOXES
+// PIN INPUT HANDLING
 // ==========================================
 
 privatePinInputs.forEach(
@@ -555,6 +780,7 @@ privatePinInputs.forEach(
                         /\D/g,
                         ""
                     );
+
 
                 if (
                     input.value &&
@@ -574,7 +800,7 @@ privatePinInputs.forEach(
 
         input.addEventListener(
             "keydown",
-            (event) => {
+            event => {
 
                 if (
                     event.key === "Backspace" &&
@@ -601,10 +827,11 @@ privatePinInputs.forEach(
 
 function getEnteredPrivatePin() {
 
-    return Array.from(
-        privatePinInputs
-    )
-        .map(input => input.value)
+    return Array
+        .from(privatePinInputs)
+        .map(
+            input => input.value
+        )
         .join("");
 
 }
@@ -618,19 +845,42 @@ function clearPrivatePin() {
 
     privatePinInputs.forEach(
         input => {
+
             input.value = "";
+
         }
     );
 
+
     if (privatePinInputs[0]) {
+
         privatePinInputs[0].focus();
+
     }
 
 }
 
 
 // ==========================================
-// VERIFY PIN FROM FIREBASE
+// PIN ERROR
+// ==========================================
+
+function showPrivateError(
+    message
+) {
+
+    if (privatePinError) {
+
+        privatePinError.textContent =
+            message;
+
+    }
+
+}
+
+
+// ==========================================
+// VERIFY PRIVATE PIN
 // ==========================================
 
 async function verifyPrivatePin() {
@@ -654,7 +904,11 @@ async function verifyPrivatePin() {
         getEnteredPrivatePin();
 
 
-    if (!/^\d{4}$/.test(enteredPin)) {
+    if (
+        !/^\d{4}$/.test(
+            enteredPin
+        )
+    ) {
 
         showPrivateError(
             "Please enter your 4-digit PIN."
@@ -667,11 +921,15 @@ async function verifyPrivatePin() {
 
     try {
 
-        privateUnlockBtn.disabled =
-            true;
+        if (privateUnlockBtn) {
 
-        privateUnlockBtn.textContent =
-            "🔐 Verifying...";
+            privateUnlockBtn.disabled =
+                true;
+
+            privateUnlockBtn.textContent =
+                "🔐 Verifying...";
+
+        }
 
 
         const userRef =
@@ -683,9 +941,7 @@ async function verifyPrivatePin() {
 
 
         const userSnapshot =
-            await getDoc(
-                userRef
-            );
+            await getDoc(userRef);
 
 
         if (!userSnapshot.exists()) {
@@ -703,10 +959,6 @@ async function verifyPrivatePin() {
             userSnapshot.data();
 
 
-        // ======================================
-        // PIN STORED IN FIRESTORE
-        // ======================================
-
         const savedPin =
             userData.privatePin;
 
@@ -722,10 +974,6 @@ async function verifyPrivatePin() {
         }
 
 
-        // ======================================
-        // VERIFY
-        // ======================================
-
         if (
             String(savedPin) ===
             String(enteredPin)
@@ -735,10 +983,18 @@ async function verifyPrivatePin() {
 
             clearPrivatePin();
 
-            privatePinError.textContent =
-                "";
+
+            if (privatePinError) {
+
+                privatePinError.textContent =
+                    "";
+
+            }
+
 
             await loadPrivateLinks();
+
+            renderPrivateLinks();
 
         }
 
@@ -757,9 +1013,10 @@ async function verifyPrivatePin() {
     catch (error) {
 
         console.error(
-            "❌ Private PIN verification error:",
+            "❌ Private PIN error:",
             error
         );
+
 
         showPrivateError(
             "Unable to verify PIN. Please try again."
@@ -769,27 +1026,15 @@ async function verifyPrivatePin() {
 
     finally {
 
-        privateUnlockBtn.disabled =
-            false;
+        if (privateUnlockBtn) {
 
-        privateUnlockBtn.textContent =
-            "🔓 Unlock Private Space";
+            privateUnlockBtn.disabled =
+                false;
 
-    }
+            privateUnlockBtn.textContent =
+                "🔓 Unlock Private Space";
 
-}
-
-
-// ==========================================
-// ERROR MESSAGE
-// ==========================================
-
-function showPrivateError(message) {
-
-    if (privatePinError) {
-
-        privatePinError.textContent =
-            message;
+        }
 
     }
 
@@ -835,53 +1080,63 @@ privatePinInputs.forEach(
     }
 );
 
-// ==========================================
-// PRIVATE SPACE UI
-// ==========================================
-
-const privateAddBtn =
-    document.getElementById("privateAddBtn");
-
-const privatePopup =
-    document.getElementById("privatePopup");
-
-const privateCloseBtn =
-    document.getElementById("privateCloseBtn");
-
-const privateSaveBtn =
-    document.getElementById("privateSaveBtn");
-
-const privateLinksContainer =
-    document.getElementById("privateLinksContainer");
-
 
 // ==========================================
-// OPEN ADD PRIVATE LINK POPUP
+// ADD PRIVATE POPUP
 // ==========================================
+
+function openPrivateAddPopup() {
+
+    if (!privatePopup) {
+        return;
+    }
+
+
+    privatePopup.style.display =
+        "flex";
+
+
+    const nameInput =
+        document.getElementById(
+            "privateLinkName"
+        );
+
+
+    if (nameInput) {
+
+        nameInput.focus();
+
+    }
+
+}
+
 
 if (privateAddBtn) {
 
     privateAddBtn.addEventListener(
         "click",
-        () => {
-
-            if (!privatePopup) return;
-
-            privatePopup.style.display = "flex";
-
-            document
-                .getElementById("privateLinkName")
-                ?.focus();
-
-        }
+        openPrivateAddPopup
     );
 
 }
 
 
 // ==========================================
-// CLOSE POPUP
+// CLOSE ADD POPUP
 // ==========================================
+
+function closePrivatePopup() {
+
+    if (!privatePopup) {
+        return;
+    }
+
+
+    privatePopup.style.display =
+        "none";
+
+}
+
 
 if (privateCloseBtn) {
 
@@ -893,27 +1148,11 @@ if (privateCloseBtn) {
 }
 
 
-function closePrivatePopup() {
-
-    if (privatePopup) {
-
-        privatePopup.style.display =
-            "none";
-
-    }
-
-}
-
-
-// ==========================================
-// CLOSE WHEN CLICKING OUTSIDE
-// ==========================================
-
 if (privatePopup) {
 
     privatePopup.addEventListener(
         "click",
-        (event) => {
+        event => {
 
             if (
                 event.target ===
@@ -931,7 +1170,7 @@ if (privatePopup) {
 
 
 // ==========================================
-// SAVE PRIVATE LINK BUTTON
+// SAVE NEW PRIVATE LINK
 // ==========================================
 
 if (privateSaveBtn) {
@@ -940,34 +1179,31 @@ if (privateSaveBtn) {
         "click",
         async () => {
 
+            const nameInput =
+                document.getElementById(
+                    "privateLinkName"
+                );
+
+            const urlInput =
+                document.getElementById(
+                    "privateLinkURL"
+                );
+
+            const noteInput =
+                document.getElementById(
+                    "privateLinkNote"
+                );
+
+
             const name =
-                document
-                    .getElementById(
-                        "privateLinkName"
-                    )
-                    ?.value
-                    .trim();
+                nameInput?.value.trim() || "";
 
             const url =
-                document
-                    .getElementById(
-                        "privateLinkURL"
-                    )
-                    ?.value
-                    .trim();
+                urlInput?.value.trim() || "";
 
             const note =
-                document
-                    .getElementById(
-                        "privateLinkNote"
-                    )
-                    ?.value
-                    .trim();
+                noteInput?.value.trim() || "";
 
-
-            // ------------------------------
-            // VALIDATION
-            // ------------------------------
 
             if (!name || !url) {
 
@@ -980,7 +1216,8 @@ if (privateSaveBtn) {
             }
 
 
-            let finalURL = url;
+            let finalURL =
+                url;
 
 
             if (
@@ -1022,59 +1259,51 @@ if (privateSaveBtn) {
                 });
 
 
-                console.log(
-                    "✅ Private link saved"
-                );
+                if (nameInput) {
+                    nameInput.value = "";
+                }
 
+                if (urlInput) {
+                    urlInput.value = "";
+                }
 
-                // --------------------------
-                // CLEAR FORM
-                // --------------------------
-
-                document
-                    .getElementById(
-                        "privateLinkName"
-                    )
-                    .value = "";
-
-                document
-                    .getElementById(
-                        "privateLinkURL"
-                    )
-                    .value = "";
-
-                document
-                    .getElementById(
-                        "privateLinkNote"
-                    )
-                    .value = "";
+                if (noteInput) {
+                    noteInput.value = "";
+                }
 
 
                 closePrivatePopup();
 
 
-                // --------------------------
-                // RELOAD LINKS
-                // --------------------------
-
+                // IMPORTANT:
+                // Reload ONLY privateLinks
                 await loadPrivateLinks();
 
                 renderPrivateLinks();
 
 
-            } catch (error) {
+                console.log(
+                    "✅ New private link displayed"
+                );
+
+            }
+
+            catch (error) {
 
                 console.error(
-                    "❌ Private link save error:",
+                    "❌ Save private link error:",
                     error
                 );
+
 
                 alert(
                     "Unable to save private link: " +
                     error.message
                 );
 
-            } finally {
+            }
+
+            finally {
 
                 privateSaveBtn.disabled =
                     false;
@@ -1091,15 +1320,321 @@ if (privateSaveBtn) {
 
 
 // ==========================================
+// OPEN EDIT POPUP
+// ==========================================
+
+function openPrivateEditPopup(link) {
+
+    if (!link) {
+
+        console.error(
+            "❌ No private link received."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "✏️ Editing private link:",
+        link.id
+    );
+
+
+    if (!privateEditPopup) {
+
+        console.error(
+            "❌ privateEditPopup not found."
+        );
+
+        return;
+
+    }
+
+
+    editingPrivateId =
+        link.id;
+
+
+    if (editPrivateLinkName) {
+
+        editPrivateLinkName.value =
+            link.name || "";
+
+    }
+
+
+    if (editPrivateLinkURL) {
+
+        editPrivateLinkURL.value =
+            link.url || "";
+
+    }
+
+
+    if (editPrivateLinkNote) {
+
+        editPrivateLinkNote.value =
+            link.note || "";
+
+    }
+
+
+    privateEditPopup.style.display =
+        "flex";
+
+
+    console.log(
+        "✅ Edit popup opened"
+    );
+
+}
+
+
+// ==========================================
+// CLOSE EDIT POPUP
+// ==========================================
+
+function closePrivateEditPopup() {
+
+    console.log(
+        "❌ Closing edit popup"
+    );
+
+
+    if (privateEditPopup) {
+
+        privateEditPopup.style.display =
+            "none";
+
+    }
+
+
+    editingPrivateId =
+        null;
+
+}
+
+
+// ==========================================
+// EDIT CANCEL BUTTON
+// ==========================================
+
+if (privateEditCloseBtn) {
+
+    privateEditCloseBtn.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            closePrivateEditPopup();
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// EDIT POPUP OUTSIDE CLICK
+// ==========================================
+
+if (privateEditPopup) {
+
+    privateEditPopup.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                privateEditPopup
+            ) {
+
+                closePrivateEditPopup();
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// UPDATE PRIVATE LINK
+// ==========================================
+
+if (privateUpdateBtn) {
+
+    privateUpdateBtn.addEventListener(
+        "click",
+        async event => {
+
+            event.preventDefault();
+
+
+            if (!editingPrivateId) {
+
+                alert(
+                    "No private link selected."
+                );
+
+                return;
+
+            }
+
+
+            const name =
+                editPrivateLinkName?.value.trim() || "";
+
+            const url =
+                editPrivateLinkURL?.value.trim() || "";
+
+            const note =
+                editPrivateLinkNote?.value.trim() || "";
+
+
+            if (!name || !url) {
+
+                alert(
+                    "Please enter Link Name and URL."
+                );
+
+                return;
+
+            }
+
+
+            let finalURL =
+                url;
+
+
+            if (
+                !finalURL.startsWith(
+                    "http://"
+                ) &&
+                !finalURL.startsWith(
+                    "https://"
+                )
+            ) {
+
+                finalURL =
+                    "https://" +
+                    finalURL;
+
+            }
+
+
+            const idToUpdate =
+                editingPrivateId;
+
+
+            try {
+
+                privateUpdateBtn.disabled =
+                    true;
+
+                privateUpdateBtn.textContent =
+                    "💾 Updating...";
+
+
+                await updatePrivateLink(
+                    idToUpdate,
+                    {
+
+                        name:
+                            name,
+
+                        url:
+                            finalURL,
+
+                        note:
+                            note
+
+                    }
+                );
+
+
+                console.log(
+                    "✅ Private link updated successfully:",
+                    idToUpdate
+                );
+
+
+                closePrivateEditPopup();
+
+
+                // Reload private collection
+                await loadPrivateLinks();
+
+
+                // Render updated collection
+                renderPrivateLinks();
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "❌ Private update error:",
+                    error
+                );
+
+
+                alert(
+                    "Unable to update private link: " +
+                    error.message
+                );
+
+            }
+
+            finally {
+
+                privateUpdateBtn.disabled =
+                    false;
+
+                privateUpdateBtn.textContent =
+                    "💾 Update Private Link";
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==========================================
 // RENDER PRIVATE LINKS
 // ==========================================
 
 function renderPrivateLinks() {
 
     if (!privateLinksContainer) {
+
+        console.error(
+            "❌ privateLinksContainer not found."
+        );
+
         return;
+
     }
 
+
+    console.log(
+        "🎨 Rendering private links:",
+        privateLinks.length
+    );
+
+
+    // ======================================
+    // EMPTY STATE
+    // ======================================
 
     if (!privateLinks.length) {
 
@@ -1129,18 +1664,50 @@ function renderPrivateLinks() {
     }
 
 
-    privateLinksContainer.innerHTML = "";
+    // ======================================
+    // CLEAR OLD PRIVATE CARDS
+    // ======================================
 
+    privateLinksContainer.innerHTML =
+        "";
+
+
+    // ======================================
+    // CREATE CARDS
+    // ======================================
 
     privateLinks.forEach(
-        (link) => {
+        link => {
 
             const card =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             card.className =
                 "private-link-card";
+
+
+            const safeName =
+                escapePrivateHTML(
+                    link.name ||
+                    "Untitled"
+                );
+
+
+            const safeURL =
+                escapePrivateHTML(
+                    link.url ||
+                    ""
+                );
+
+
+            const safeNote =
+                escapePrivateHTML(
+                    link.note ||
+                    ""
+                );
 
 
             card.innerHTML = `
@@ -1148,45 +1715,47 @@ function renderPrivateLinks() {
                 <div class="private-link-info">
 
                     <h3>
-                        🔐 ${escapePrivateHTML(
-                            link.name || "Untitled"
-                        )}
+                        🔐 ${safeName}
                     </h3>
 
                     <p>
-                        ${escapePrivateHTML(
-                            link.url || ""
-                        )}
+                        ${safeURL}
                     </p>
 
                     ${
-                        link.note
+                        safeNote
                             ? `
                                 <small>
-                                    📝 ${escapePrivateHTML(
-                                        link.note
-                                    )}
+                                    📝 ${safeNote}
                                 </small>
-                              `
+                            `
                             : ""
                     }
 
                 </div>
 
+
                 <div class="private-link-actions">
 
                     <button
                         class="private-open-btn"
-                        data-url="${escapePrivateHTML(
-                            link.url || ""
-                        )}"
+                        type="button"
                     >
                         🌐 Open
                     </button>
 
+
+                    <button
+                        class="private-edit-btn"
+                        type="button"
+                    >
+                        ✏️ Edit
+                    </button>
+
+
                     <button
                         class="private-delete-btn"
-                        data-id="${link.id}"
+                        type="button"
                     >
                         🗑 Delete
                     </button>
@@ -1196,9 +1765,9 @@ function renderPrivateLinks() {
             `;
 
 
-            // ------------------------------
-            // OPEN
-            // ------------------------------
+            // ==================================
+            // OPEN BUTTON
+            // ==================================
 
             const openBtn =
                 card.querySelector(
@@ -1212,15 +1781,16 @@ function renderPrivateLinks() {
                     "click",
                     () => {
 
-                        if (link.url) {
-
-                            window.open(
-                                link.url,
-                                "_blank",
-                                "noopener,noreferrer"
-                            );
-
+                        if (!link.url) {
+                            return;
                         }
+
+
+                        window.open(
+                            link.url,
+                            "_blank",
+                            "noopener,noreferrer"
+                        );
 
                     }
                 );
@@ -1228,9 +1798,46 @@ function renderPrivateLinks() {
             }
 
 
-            // ------------------------------
-            // DELETE
-            // ------------------------------
+            // ==================================
+            // EDIT BUTTON
+            // ==================================
+
+            const editBtn =
+                card.querySelector(
+                    ".private-edit-btn"
+                );
+
+
+            if (editBtn) {
+
+                editBtn.addEventListener(
+                    "click",
+                    event => {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        console.log(
+                            "✏️ Edit clicked:",
+                            link.id
+                        );
+
+
+                        openPrivateEditPopup(
+                            link
+                        );
+
+                    }
+                );
+
+            }
+
+
+            // ==================================
+            // DELETE BUTTON
+            // ==================================
 
             const deleteBtn =
                 card.querySelector(
@@ -1242,7 +1849,12 @@ function renderPrivateLinks() {
 
                 deleteBtn.addEventListener(
                     "click",
-                    async () => {
+                    async event => {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
 
                         const confirmed =
                             confirm(
@@ -1265,14 +1877,22 @@ function renderPrivateLinks() {
                             renderPrivateLinks();
 
 
-                        } catch (error) {
+                            console.log(
+                                "✅ Private link deleted"
+                            );
+
+                        }
+
+                        catch (error) {
 
                             console.error(
+                                "❌ Delete error:",
                                 error
                             );
 
+
                             alert(
-                                "Unable to delete link."
+                                "Unable to delete private link."
                             );
 
                         }
@@ -1294,28 +1914,35 @@ function renderPrivateLinks() {
 
 
 // ==========================================
-// BASIC HTML ESCAPE
+// HTML ESCAPE
 // ==========================================
 
-function escapePrivateHTML(value) {
+function escapePrivateHTML(
+    value
+) {
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
@@ -1325,10 +1952,33 @@ function escapePrivateHTML(value) {
 
 
 // ==========================================
-// LOAD + RENDER AFTER UNLOCK
+// INITIALIZE PRIVATE SPACE
 // ==========================================
 
-async function initializePrivateLinks() {
+async function initializePrivateSpace(
+    user
+) {
+
+    if (!user) {
+
+        console.warn(
+            "🔐 Private Space: No Firebase user."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "🔐 Initializing Private Space for:",
+        user.uid
+    );
+
+
+    // ======================================
+    // LOCKED
+    // ======================================
 
     if (
         sessionStorage.getItem(
@@ -1336,16 +1986,86 @@ async function initializePrivateLinks() {
         ) !== "true"
     ) {
 
+        showPrivateLock();
+
         return;
 
     }
 
 
-    await loadPrivateLinks();
+    // ======================================
+    // UNLOCKED
+    // ======================================
 
-    renderPrivateLinks();
+    unlockPrivateSpace();
+
+
+    try {
+
+        // IMPORTANT:
+        // Only Firebase privateLinks collection
+        // is loaded here.
+
+        await loadPrivateLinks();
+
+
+        renderPrivateLinks();
+
+
+        console.log(
+            "✅ Private Space initialized correctly"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "❌ Private Space initialization error:",
+            error
+        );
+
+    }
 
 }
 
 
-initializePrivateLinks();
+// ==========================================
+// FIREBASE AUTH STATE
+// ==========================================
+
+auth.onAuthStateChanged(
+    async user => {
+
+        console.log(
+            "🔥 Firebase auth state:",
+            user
+                ? user.uid
+                : "No user"
+        );
+
+
+        if (!user) {
+
+            showPrivateLock();
+
+            return;
+
+        }
+
+
+        await initializePrivateSpace(
+            user
+        );
+
+    }
+);
+
+
+// ==========================================
+// FINAL READY
+// ==========================================
+
+console.log(
+    "🔐 Private Space module loaded successfully"
+);

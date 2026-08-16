@@ -14,11 +14,14 @@
     <link rel="manifest" href="manifest.json">
 
     <meta name="theme-color" content="#050816">
+
     <link rel="icon" type="image/png" href="icon.png">
 
 </head>
 
+
 <body class="private-space-page">
+
 
     <!-- =========================================
          PRIVATE SPACE
@@ -26,20 +29,28 @@
 
     <main class="private-space-wrapper">
 
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
         <header class="private-space-header">
 
             <button
                 class="private-back-btn"
                 id="privateBackBtn"
+                type="button"
             >
                 ← Dashboard
             </button>
+
 
             <div class="private-heading">
 
                 <div class="private-lock">
                     🔐
                 </div>
+
 
                 <div>
 
@@ -62,6 +73,7 @@
         </header>
 
 
+
         <!-- =====================================
              LOCK SCREEN
         ====================================== -->
@@ -77,13 +89,16 @@
                     🔐
                 </div>
 
+
                 <span class="private-badge">
                     PRIVATE & PROTECTED
                 </span>
 
+
                 <h2>
                     Private Space Locked
                 </h2>
+
 
                 <p>
                     Enter your 4-digit PIN to access
@@ -133,6 +148,7 @@
                 <button
                     class="private-unlock-btn"
                     id="privateUnlockBtn"
+                    type="button"
                 >
                     🔓 Unlock Private Space
                 </button>
@@ -140,6 +156,7 @@
             </div>
 
         </section>
+
 
 
         <!-- =====================================
@@ -159,9 +176,11 @@
                         SECURE COLLECTION
                     </span>
 
+
                     <h2>
                         Your Private Links
                     </h2>
+
 
                     <p>
                         Only you can access these links.
@@ -169,15 +188,22 @@
 
                 </div>
 
+
                 <button
                     class="private-add-btn"
                     id="privateAddBtn"
+                    type="button"
                 >
                     + Add Private Link
                 </button>
 
             </div>
 
+
+
+            <!-- =================================
+                 PRIVATE LINKS
+            ================================== -->
 
             <div
                 class="private-links-container"
@@ -190,13 +216,14 @@
                         🔒
                     </div>
 
+
                     <h3>
-                        No Private Links Yet
+                        Loading Private Links...
                     </h3>
 
+
                     <p>
-                        Links you save here will remain
-                        separate from your normal collection.
+                        Please wait...
                     </p>
 
                 </div>
@@ -206,6 +233,7 @@
         </section>
 
     </main>
+
 
 
     <!-- =========================================
@@ -222,6 +250,7 @@
             <h2>
                 🔐 Add Private Link
             </h2>
+
 
             <p>
                 This link will be stored separately
@@ -255,12 +284,87 @@
                 <button
                     id="privateSaveBtn"
                     class="private-save-btn"
+                    type="button"
                 >
                     🔒 Save Private Link
                 </button>
 
+
                 <button
                     id="privateCloseBtn"
+                    class="private-close-btn"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         EDIT PRIVATE LINK POPUP
+
+         IMPORTANT:
+         THIS EXISTS ONLY ONCE
+    ========================================== -->
+
+    <div
+        class="private-popup"
+        id="privateEditPopup"
+    >
+
+        <div class="private-popup-card">
+
+            <h2>
+                ✏️ Edit Private Link
+            </h2>
+
+
+            <p>
+                Update your private link details.
+            </p>
+
+
+            <input
+                type="text"
+                id="editPrivateLinkName"
+                placeholder="Link Name"
+            >
+
+
+            <input
+                type="url"
+                id="editPrivateLinkURL"
+                placeholder="Paste URL"
+            >
+
+
+            <textarea
+                id="editPrivateLinkNote"
+                placeholder="Private note (optional)"
+                rows="3"
+            ></textarea>
+
+
+            <div class="private-popup-actions">
+
+                <button
+                    type="button"
+                    id="privateUpdateBtn"
+                    class="private-save-btn"
+                >
+                    💾 Update Private Link
+                </button>
+
+
+                <button
+                    type="button"
+                    id="privateEditCloseBtn"
                     class="private-close-btn"
                 >
                     Cancel
@@ -273,11 +377,15 @@
     </div>
 
 
+
     <!-- =========================================
          JAVASCRIPT
     ========================================== -->
 
-    <script type="module" src="private-space.js"></script>
+    <script
+        type="module"
+        src="private-space.js"
+    ></script>
 
 
 </body>

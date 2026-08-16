@@ -28,6 +28,7 @@
 
 
         body {
+
             min-height: 100vh;
 
             display: flex;
@@ -65,6 +66,7 @@
         /* Background glow */
 
         body::before {
+
             content: "";
 
             position: fixed;
@@ -87,6 +89,7 @@
 
 
         body::after {
+
             content: "";
 
             position: fixed;
@@ -152,17 +155,23 @@
         @keyframes cardAppear {
 
             from {
+
                 opacity: 0;
+
                 transform:
                     translateY(25px)
                     scale(.96);
+
             }
 
             to {
+
                 opacity: 1;
+
                 transform:
                     translateY(0)
                     scale(1);
+
             }
 
         }
@@ -175,9 +184,11 @@
             width: 82px;
             height: 82px;
 
-            margin: 0 auto 22px;
+            margin:
+                0 auto 22px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
@@ -338,9 +349,9 @@
         }
 
 
-        /* Unlock Button */
+        /* Main Button */
 
-        #unlockBtn {
+        .main-btn {
 
             width: 100%;
 
@@ -378,7 +389,7 @@
         }
 
 
-        #unlockBtn:hover {
+        .main-btn:hover {
 
             transform:
                 translateY(-2px);
@@ -392,18 +403,30 @@
         }
 
 
-        #unlockBtn:active {
+        .main-btn:active {
 
             transform:
                 scale(.98);
         }
 
 
-        /* Back Button */
+        .main-btn:disabled {
 
-        .back-btn {
+            opacity: .65;
 
-            margin-top: 18px;
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+        }
+
+
+        /* Secondary Buttons */
+
+        .secondary-btn {
+
+            margin-top: 16px;
 
             border: none;
 
@@ -420,13 +443,35 @@
         }
 
 
-        .back-btn:hover {
+        .secondary-btn:hover {
 
             color: white;
         }
 
 
-        /* Security text */
+        /* Change PIN */
+
+        #changePinBtn {
+
+            display: none;
+        }
+
+
+        /* Back */
+
+        #backBtn {
+
+            display: block;
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            padding-top: 4px;
+        }
+
+
+        /* Security */
 
         .security {
 
@@ -445,37 +490,29 @@
         }
 
 
-        /* Error */
+        /* Status */
 
-        .error {
+        .status {
 
             display: none;
 
-            margin-top: 13px;
-
-            color: #fca5a5;
+            margin-bottom: 18px;
 
             font-size: 12px;
 
-            animation:
-                shake .3s ease;
+            line-height: 1.5;
         }
 
 
-        @keyframes shake {
+        .status.error {
 
-            0%, 100% {
-                transform: translateX(0);
-            }
+            color: #fca5a5;
+        }
 
-            25% {
-                transform: translateX(-6px);
-            }
 
-            75% {
-                transform: translateX(6px);
-            }
+        .status.success {
 
+            color: #86efac;
         }
 
 
@@ -530,57 +567,97 @@
 
     <main class="pin-card">
 
+
         <div class="lock-icon">
             🔐
         </div>
 
 
-        <h1>
+        <h1 id="title">
             Private Space
         </h1>
 
 
-        <p class="subtitle">
-            Enter your 4-digit PIN to unlock
-            your private vault.
+        <p
+            class="subtitle"
+            id="subtitle"
+        >
+            Checking your Private Space...
         </p>
 
 
-        <div class="pin-dots">
+        <!-- Status -->
 
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+        <div
+            class="status"
+            id="status"
+        ></div>
+
+
+        <!-- PIN area -->
+
+        <div id="pinArea">
+
+
+            <div class="pin-dots">
+
+                <span class="dot"></span>
+
+                <span class="dot"></span>
+
+                <span class="dot"></span>
+
+                <span class="dot"></span>
+
+            </div>
+
+
+            <input
+                type="password"
+                id="privatePin"
+                maxlength="4"
+                inputmode="numeric"
+                autocomplete="off"
+                placeholder="••••"
+            >
+
+
+            <button
+                class="main-btn"
+                id="unlockBtn"
+            >
+                🔓 Unlock Private Space
+            </button>
+
 
         </div>
 
 
-        <input
-            type="password"
-            id="privatePin"
-            maxlength="4"
-            inputmode="numeric"
-            autocomplete="off"
-            placeholder="••••"
+        <!-- Create PIN -->
+
+        <button
+            class="main-btn"
+            id="createPinBtn"
+            style="display:none;"
         >
-
-
-        <p
-            class="error"
-            id="pinError"
-        >
-            ❌ Incorrect PIN. Try again.
-        </p>
-
-
-        <button id="unlockBtn">
-            🔓 Unlock Private Space
+            🔐 Create Private PIN
         </button>
 
 
+        <!-- Change PIN -->
+
         <button
-            class="back-btn"
+            class="secondary-btn"
+            id="changePinBtn"
+        >
+            🔄 Change Private PIN
+        </button>
+
+
+        <!-- Back -->
+
+        <button
+            class="secondary-btn"
             id="backBtn"
         >
             ← Back to LinkVault
@@ -591,30 +668,94 @@
             🛡️ Your private space is protected
         </div>
 
+
     </main>
 
 
-    <script>
+    <script type="module">
+
+
+        /* =========================================
+           FIREBASE IMPORTS
+        ========================================= */
+
+        import {
+            onAuthStateChanged
+        }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+        import {
+            doc,
+            getDoc
+        }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+        import {
+            auth,
+            db
+        }
+        from "./firebase.js";
+
+
+        /* =========================================
+           ELEMENTS
+        ========================================= */
+
+        const title =
+            document.getElementById(
+                "title"
+            );
+
+
+        const subtitle =
+            document.getElementById(
+                "subtitle"
+            );
+
+
+        const status =
+            document.getElementById(
+                "status"
+            );
+
+
+        const pinArea =
+            document.getElementById(
+                "pinArea"
+            );
+
 
         const pinInput =
             document.getElementById(
                 "privatePin"
             );
 
+
         const unlockBtn =
             document.getElementById(
                 "unlockBtn"
             );
 
-        const pinError =
+
+        const createPinBtn =
             document.getElementById(
-                "pinError"
+                "createPinBtn"
             );
+
+
+        const changePinBtn =
+            document.getElementById(
+                "changePinBtn"
+            );
+
 
         const backBtn =
             document.getElementById(
                 "backBtn"
             );
+
 
         const dots =
             document.querySelectorAll(
@@ -622,8 +763,289 @@
             );
 
 
+        let currentUser = null;
+
+
+        let privatePinExists =
+            false;
+
+
         /* =========================================
-           PIN DOTS
+           STATUS
+        ========================================= */
+
+        function showStatus(
+            message,
+            type
+        ) {
+
+            status.textContent =
+                message;
+
+            status.className =
+                "status " + type;
+
+            status.style.display =
+                "block";
+
+        }
+
+
+        function hideStatus() {
+
+            status.style.display =
+                "none";
+
+        }
+
+
+        /* =========================================
+           SHOW EXISTING PIN UI
+        ========================================= */
+
+        function showUnlockUI() {
+
+            privatePinExists =
+                true;
+
+
+            title.textContent =
+                "Private Space";
+
+
+            subtitle.textContent =
+                "Enter your 4-digit Private PIN to unlock your private vault.";
+
+
+            pinArea.style.display =
+                "block";
+
+
+            createPinBtn.style.display =
+                "none";
+
+
+            changePinBtn.style.display =
+                "inline-block";
+
+
+            hideStatus();
+
+
+            setTimeout(
+                () => {
+
+                    pinInput.focus();
+
+                },
+                300
+            );
+
+        }
+
+
+        /* =========================================
+           SHOW CREATE PIN UI
+        ========================================= */
+
+        function showCreateUI() {
+
+            privatePinExists =
+                false;
+
+
+            title.textContent =
+                "Set Up Private Space";
+
+
+            subtitle.textContent =
+                "You don't have a Private PIN yet. Create a separate 4-digit PIN to protect your private vault.";
+
+
+            pinArea.style.display =
+                "none";
+
+
+            createPinBtn.style.display =
+                "block";
+
+
+            changePinBtn.style.display =
+                "none";
+
+
+            showStatus(
+                "🔐 Private PIN not created yet.",
+                "error"
+            );
+
+        }
+
+
+        /* =========================================
+           CHECK PRIVATE PIN
+        ========================================= */
+
+        async function checkPrivatePin() {
+
+            if (!currentUser) {
+
+                return;
+
+            }
+
+
+            try {
+
+                console.log(
+                    "🔎 Checking Private PIN..."
+                );
+
+
+                const userRef =
+                    doc(
+                        db,
+                        "users",
+                        currentUser.uid
+                    );
+
+
+                const userSnap =
+                    await getDoc(
+                        userRef
+                    );
+
+
+                if (
+                    !userSnap.exists()
+                ) {
+
+                    console.log(
+                        "❌ User document not found"
+                    );
+
+
+                    showCreateUI();
+
+                    return;
+
+                }
+
+
+                const userData =
+                    userSnap.data();
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * We ONLY check:
+                 *
+                 * userData.privatePin
+                 *
+                 * We DO NOT check:
+                 *
+                 * userData.userPin
+                 *
+                 * localStorage.userPin
+                 */
+
+                const savedPrivatePin =
+                    userData.privatePin;
+
+
+                if (
+                    savedPrivatePin !== undefined &&
+                    savedPrivatePin !== null &&
+                    String(savedPrivatePin).length === 4
+                ) {
+
+                    console.log(
+                        "✅ Private PIN found"
+                    );
+
+
+                    showUnlockUI();
+
+                }
+
+                else {
+
+                    console.log(
+                        "ℹ️ Private PIN not found"
+                    );
+
+
+                    showCreateUI();
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "❌ Failed to check Private PIN:",
+                    error
+                );
+
+
+                showStatus(
+                    "❌ Unable to check Private Space. Please try again.",
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           AUTH STATE
+        ========================================= */
+
+        onAuthStateChanged(
+            auth,
+            (user) => {
+
+                if (user) {
+
+                    currentUser =
+                        user;
+
+
+                    console.log(
+                        "✅ Private Space user:",
+                        user.uid
+                    );
+
+
+                    checkPrivatePin();
+
+                }
+
+                else {
+
+                    currentUser =
+                        null;
+
+
+                    alert(
+                        "Please login to LinkVault first."
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           PIN INPUT
         ========================================= */
 
         pinInput.addEventListener(
@@ -662,125 +1084,270 @@
                 );
 
 
-                pinError.style.display =
-                    "none";
+                hideStatus();
 
             }
         );
 
 
         /* =========================================
-           UNLOCK
+           ERROR
         ========================================= */
 
-        function unlockPrivateSpace() {
+        function showPinError(
+            message
+        ) {
+
+            showStatus(
+                message,
+                "error"
+            );
+
+
+            pinInput.value =
+                "";
+
+
+            dots.forEach(
+                dot =>
+                    dot.classList.remove(
+                        "active"
+                    )
+            );
+
+
+            pinInput.focus();
+
+
+            pinInput.animate(
+                [
+                    {
+                        transform:
+                            "translateX(-6px)"
+                    },
+                    {
+                        transform:
+                            "translateX(6px)"
+                    },
+                    {
+                        transform:
+                            "translateX(-4px)"
+                    },
+                    {
+                        transform:
+                            "translateX(4px)"
+                    },
+                    {
+                        transform:
+                            "translateX(0)"
+                    }
+                ],
+                {
+                    duration: 300
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           UNLOCK PRIVATE SPACE
+        ========================================= */
+
+        async function unlockPrivateSpace() {
 
             const enteredPin =
                 pinInput.value.trim();
 
-            const savedPin =
-                localStorage.getItem(
-                    "userPin"
+
+            if (
+                !/^\d{4}$/.test(
+                    enteredPin
+                )
+            ) {
+
+                showPinError(
+                    "❌ Please enter your 4-digit Private PIN."
                 );
-
-
-            if (!savedPin) {
-
-                alert(
-                    "No PIN found. Please set your PIN first."
-                );
-
-                window.location.href =
-                    "setpin.html";
 
                 return;
 
             }
 
 
-            if (
-                enteredPin === savedPin
-            ) {
+            if (!currentUser) {
 
-                sessionStorage.setItem(
-                    "privateUnlocked",
-                    "true"
+                showPinError(
+                    "❌ Please login to LinkVault first."
                 );
 
+                return;
 
-                unlockBtn.textContent =
-                    "🔓 Unlocking...";
+            }
 
+
+            try {
 
                 unlockBtn.disabled =
                     true;
 
 
-                setTimeout(
-                    () => {
+                unlockBtn.textContent =
+                    "🔐 Checking...";
 
-                        window.location.href =
-                            "private-space.html";
 
-                    },
-                    350
-                );
+                const userRef =
+                    doc(
+                        db,
+                        "users",
+                        currentUser.uid
+                    );
+
+
+                const userSnap =
+                    await getDoc(
+                        userRef
+                    );
+
+
+                if (
+                    !userSnap.exists()
+                ) {
+
+                    showPinError(
+                        "❌ User account not found."
+                    );
+
+
+                    unlockBtn.disabled =
+                        false;
+
+
+                    unlockBtn.textContent =
+                        "🔓 Unlock Private Space";
+
+
+                    return;
+
+                }
+
+
+                const userData =
+                    userSnap.data();
+
+
+                /*
+                 * ONLY privatePin.
+                 */
+
+                const savedPrivatePin =
+                    userData.privatePin;
+
+
+                if (
+                    !savedPrivatePin
+                ) {
+
+                    showCreateUI();
+
+                    return;
+
+                }
+
+
+                /* =================================
+                   VERIFY
+                ================================= */
+
+                if (
+                    enteredPin ===
+                    String(savedPrivatePin)
+                ) {
+
+                    console.log(
+                        "✅ Private PIN correct"
+                    );
+
+
+                    sessionStorage.setItem(
+                        "privateUnlocked",
+                        "true"
+                    );
+
+
+                    unlockBtn.textContent =
+                        "🔓 Unlocked";
+
+
+                    showStatus(
+                        "✅ Private Space unlocked.",
+                        "success"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                "private-space.html";
+
+                        },
+                        350
+                    );
+
+                }
+
+                else {
+
+                    console.log(
+                        "❌ Incorrect Private PIN"
+                    );
+
+
+                    showPinError(
+                        "❌ Incorrect Private PIN. Try again."
+                    );
+
+
+                    unlockBtn.disabled =
+                        false;
+
+
+                    unlockBtn.textContent =
+                        "🔓 Unlock Private Space";
+
+                }
 
             }
 
-            else {
+            catch (error) {
 
-                pinError.style.display =
-                    "block";
-
-
-                pinInput.value =
-                    "";
-
-
-                dots.forEach(
-                    dot =>
-                        dot.classList.remove(
-                            "active"
-                        )
+                console.error(
+                    "❌ Private PIN verification error:",
+                    error
                 );
 
 
-                pinInput.focus();
-
-
-                pinInput.animate(
-                    [
-                        {
-                            transform:
-                                "translateX(-6px)"
-                        },
-                        {
-                            transform:
-                                "translateX(6px)"
-                        },
-                        {
-                            transform:
-                                "translateX(-4px)"
-                        },
-                        {
-                            transform:
-                                "translateX(4px)"
-                        },
-                        {
-                            transform:
-                                "translateX(0)"
-                        }
-                    ],
-                    {
-                        duration: 300
-                    }
+                showPinError(
+                    "❌ Unable to verify PIN. Please try again."
                 );
+
+
+                unlockBtn.disabled =
+                    false;
+
+
+                unlockBtn.textContent =
+                    "🔓 Unlock Private Space";
 
             }
 
         }
 
+
+        /* =========================================
+           UNLOCK BUTTON
+        ========================================= */
 
         unlockBtn.addEventListener(
             "click",
@@ -788,7 +1355,9 @@
         );
 
 
-        /* ENTER KEY */
+        /* =========================================
+           ENTER KEY
+        ========================================= */
 
         pinInput.addEventListener(
             "keydown",
@@ -806,7 +1375,39 @@
         );
 
 
-        /* BACK */
+        /* =========================================
+           CREATE PRIVATE PIN
+        ========================================= */
+
+        createPinBtn.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "private-pin-setup.html";
+
+            }
+        );
+
+
+        /* =========================================
+           CHANGE PRIVATE PIN
+        ========================================= */
+
+        changePinBtn.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "private-pin-setup.html";
+
+            }
+        );
+
+
+        /* =========================================
+           BACK
+        ========================================= */
 
         backBtn.addEventListener(
             "click",
@@ -818,24 +1419,6 @@
             }
         );
 
-
-        /* Auto focus */
-
-        window.addEventListener(
-            "load",
-            () => {
-
-                setTimeout(
-                    () => {
-
-                        pinInput.focus();
-
-                    },
-                    400
-                );
-
-            }
-        );
 
     </script>
 

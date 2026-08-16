@@ -1471,10 +1471,7 @@ function renderSingleLink(
 
     deleteButton.addEventListener("click", () => {
 
-        openDeleteModal(
-            link.firestoreId,
-            link.name
-        );
+        deleteLink(link.firestoreId);
 
     });
 
@@ -2483,6 +2480,17 @@ async function filterByCategory(
         renderLinks(
             filtered
         );
+        // Smoothly scroll to the links section
+        setTimeout(() => {
+            const linksSection = document.getElementById("linksContainer");
+
+            if (linksSection) {
+                linksSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        }, 100);
 
     }
 
