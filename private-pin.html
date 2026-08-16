@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b1020"
+    >
+
+    <title>Private Space • LinkVault</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(59, 130, 246, .22),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(139, 92, 246, .22),
+                    transparent 35%
+                ),
+                #070b16;
+
+            overflow: hidden;
+        }
+
+
+        /* Background glow */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(59, 130, 246, .10);
+
+            filter: blur(90px);
+
+            top: -150px;
+            left: -150px;
+
+            pointer-events: none;
+        }
+
+
+        body::after {
+            content: "";
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(168, 85, 247, .10);
+
+            filter: blur(90px);
+
+            bottom: -150px;
+            right: -150px;
+
+            pointer-events: none;
+        }
+
+
+        /* Main Card */
+
+        .pin-card {
+
+            width: 100%;
+            max-width: 420px;
+
+            padding: 38px 30px 32px;
+
+            text-align: center;
+
+            border-radius: 28px;
+
+            background:
+                rgba(17, 24, 39, .72);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .10);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0, 0, 0, .45),
+                inset 0 1px 0
+                rgba(255, 255, 255, .06);
+
+            backdrop-filter:
+                blur(25px);
+
+            -webkit-backdrop-filter:
+                blur(25px);
+
+            position: relative;
+
+            z-index: 2;
+
+            animation:
+                cardAppear .6s ease;
+        }
+
+
+        @keyframes cardAppear {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(25px)
+                    scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        /* Lock Icon */
+
+        .lock-icon {
+
+            width: 82px;
+            height: 82px;
+
+            margin: 0 auto 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 24px;
+
+            font-size: 38px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, .22),
+                    rgba(139, 92, 246, .22)
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .12);
+
+            box-shadow:
+                0 15px 40px
+                rgba(59, 130, 246, .15);
+        }
+
+
+        /* Heading */
+
+        h1 {
+
+            font-size: 27px;
+
+            font-weight: 750;
+
+            letter-spacing: -.5px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .subtitle {
+
+            color:
+                rgba(255, 255, 255, .60);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* PIN dots */
+
+        .pin-dots {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .dot {
+
+            width: 13px;
+            height: 13px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, .12);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .18);
+
+            transition:
+                .2s ease;
+        }
+
+
+        .dot.active {
+
+            background: #60a5fa;
+
+            border-color: #60a5fa;
+
+            box-shadow:
+                0 0 16px
+                rgba(96, 165, 250, .75);
+
+            transform:
+                scale(1.15);
+        }
+
+
+        /* PIN Input */
+
+        #privatePin {
+
+            width: 100%;
+
+            height: 58px;
+
+            border-radius: 17px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .12);
+
+            outline: none;
+
+            background:
+                rgba(255, 255, 255, .055);
+
+            color: white;
+
+            text-align: center;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            letter-spacing: 13px;
+
+            padding-left: 13px;
+
+            transition:
+                .25s ease;
+        }
+
+
+        #privatePin::placeholder {
+
+            color:
+                rgba(255, 255, 255, .25);
+
+            letter-spacing: 8px;
+        }
+
+
+        #privatePin:focus {
+
+            border-color:
+                rgba(96, 165, 250, .75);
+
+            background:
+                rgba(255, 255, 255, .075);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(59, 130, 246, .10),
+                0 0 25px
+                rgba(59, 130, 246, .12);
+        }
+
+
+        /* Unlock Button */
+
+        #unlockBtn {
+
+            width: 100%;
+
+            height: 56px;
+
+            margin-top: 18px;
+
+            border: none;
+
+            border-radius: 17px;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3b82f6,
+                    #7c3aed
+                );
+
+            box-shadow:
+                0 12px 30px
+                rgba(59, 130, 246, .25);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                filter .2s ease;
+        }
+
+
+        #unlockBtn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 18px 38px
+                rgba(59, 130, 246, .35);
+
+            filter:
+                brightness(1.08);
+        }
+
+
+        #unlockBtn:active {
+
+            transform:
+                scale(.98);
+        }
+
+
+        /* Back Button */
+
+        .back-btn {
+
+            margin-top: 18px;
+
+            border: none;
+
+            background: transparent;
+
+            color:
+                rgba(255, 255, 255, .50);
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+
+        .back-btn:hover {
+
+            color: white;
+        }
+
+
+        /* Security text */
+
+        .security {
+
+            margin-top: 25px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, .07);
+
+            color:
+                rgba(255, 255, 255, .40);
+
+            font-size: 11px;
+        }
+
+
+        /* Error */
+
+        .error {
+
+            display: none;
+
+            margin-top: 13px;
+
+            color: #fca5a5;
+
+            font-size: 12px;
+
+            animation:
+                shake .3s ease;
+        }
+
+
+        @keyframes shake {
+
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-6px);
+            }
+
+            75% {
+                transform: translateX(6px);
+            }
+
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 480px) {
+
+            .pin-card {
+
+                padding:
+                    32px 22px 27px;
+
+                border-radius: 24px;
+            }
+
+
+            .lock-icon {
+
+                width: 72px;
+                height: 72px;
+
+                font-size: 32px;
+            }
+
+
+            h1 {
+
+                font-size: 24px;
+            }
+
+
+            #privatePin {
+
+                height: 56px;
+
+                font-size: 22px;
+
+                letter-spacing: 10px;
+
+                padding-left: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="pin-card">
+
+        <div class="lock-icon">
+            🔐
+        </div>
+
+
+        <h1>
+            Private Space
+        </h1>
+
+
+        <p class="subtitle">
+            Enter your 4-digit PIN to unlock
+            your private vault.
+        </p>
+
+
+        <div class="pin-dots">
+
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+
+        </div>
+
+
+        <input
+            type="password"
+            id="privatePin"
+            maxlength="4"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="••••"
+        >
+
+
+        <p
+            class="error"
+            id="pinError"
+        >
+            ❌ Incorrect PIN. Try again.
+        </p>
+
+
+        <button id="unlockBtn">
+            🔓 Unlock Private Space
+        </button>
+
+
+        <button
+            class="back-btn"
+            id="backBtn"
+        >
+            ← Back to LinkVault
+        </button>
+
+
+        <div class="security">
+            🛡️ Your private space is protected
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const pinInput =
+            document.getElementById(
+                "privatePin"
+            );
+
+        const unlockBtn =
+            document.getElementById(
+                "unlockBtn"
+            );
+
+        const pinError =
+            document.getElementById(
+                "pinError"
+            );
+
+        const backBtn =
+            document.getElementById(
+                "backBtn"
+            );
+
+        const dots =
+            document.querySelectorAll(
+                ".dot"
+            );
+
+
+        /* =========================================
+           PIN DOTS
+        ========================================= */
+
+        pinInput.addEventListener(
+            "input",
+            () => {
+
+                pinInput.value =
+                    pinInput.value
+                        .replace(/\D/g, "")
+                        .slice(0, 4);
+
+
+                dots.forEach(
+                    (dot, index) => {
+
+                        if (
+                            index <
+                            pinInput.value.length
+                        ) {
+
+                            dot.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                        else {
+
+                            dot.classList.remove(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                pinError.style.display =
+                    "none";
+
+            }
+        );
+
+
+        /* =========================================
+           UNLOCK
+        ========================================= */
+
+        function unlockPrivateSpace() {
+
+            const enteredPin =
+                pinInput.value.trim();
+
+            const savedPin =
+                localStorage.getItem(
+                    "userPin"
+                );
+
+
+            if (!savedPin) {
+
+                alert(
+                    "No PIN found. Please set your PIN first."
+                );
+
+                window.location.href =
+                    "setpin.html";
+
+                return;
+
+            }
+
+
+            if (
+                enteredPin === savedPin
+            ) {
+
+                sessionStorage.setItem(
+                    "privateUnlocked",
+                    "true"
+                );
+
+
+                unlockBtn.textContent =
+                    "🔓 Unlocking...";
+
+
+                unlockBtn.disabled =
+                    true;
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.href =
+                            "private-space.html";
+
+                    },
+                    350
+                );
+
+            }
+
+            else {
+
+                pinError.style.display =
+                    "block";
+
+
+                pinInput.value =
+                    "";
+
+
+                dots.forEach(
+                    dot =>
+                        dot.classList.remove(
+                            "active"
+                        )
+                );
+
+
+                pinInput.focus();
+
+
+                pinInput.animate(
+                    [
+                        {
+                            transform:
+                                "translateX(-6px)"
+                        },
+                        {
+                            transform:
+                                "translateX(6px)"
+                        },
+                        {
+                            transform:
+                                "translateX(-4px)"
+                        },
+                        {
+                            transform:
+                                "translateX(4px)"
+                        },
+                        {
+                            transform:
+                                "translateX(0)"
+                        }
+                    ],
+                    {
+                        duration: 300
+                    }
+                );
+
+            }
+
+        }
+
+
+        unlockBtn.addEventListener(
+            "click",
+            unlockPrivateSpace
+        );
+
+
+        /* ENTER KEY */
+
+        pinInput.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    unlockPrivateSpace();
+
+                }
+
+            }
+        );
+
+
+        /* BACK */
+
+        backBtn.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "index.html";
+
+            }
+        );
+
+
+        /* Auto focus */
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                setTimeout(
+                    () => {
+
+                        pinInput.focus();
+
+                    },
+                    400
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

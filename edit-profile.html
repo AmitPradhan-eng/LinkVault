@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile — LinkVault 2.0</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#050816">
+
+</head>
+
+
+<body>
+    <script>
+        const savedDarkMode =
+            localStorage.getItem(
+                "linkvault_dark_mode"
+            );
+
+        if (savedDarkMode === "false") {
+            document.body.classList.add("light-mode");
+        }
+    </script>
+
+    <!-- =========================================
+         PAGE
+    ========================================== -->
+
+    <main class="edit-profile-page">
+
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <div class="edit-profile-header">
+
+            <button id="backProfileBtn" class="profile-back-btn">
+                ← Back
+            </button>
+
+
+            <div>
+
+                <span class="profile-page-label">
+                    ACCOUNT
+                </span>
+
+                <h1>
+                    Edit Profile
+                </h1>
+
+                <p>
+                    Update your personal information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================
+             PROFILE CARD
+        ====================================== -->
+
+        <section class="edit-profile-card">
+
+
+            <!-- Avatar -->
+
+            <div class="edit-profile-avatar">
+                👤
+            </div>
+
+
+            <div class="edit-profile-title">
+
+                <h2>
+                    Personal Information
+                </h2>
+
+                <p>
+                    Keep your LinkVault profile up to date.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================
+                 FORM
+            ================================== -->
+
+            <form id="profileForm">
+
+
+                <!-- NAME -->
+
+                <div class="profile-form-group">
+
+                    <label for="editName">
+                        Full Name
+                    </label>
+
+                    <input type="text" id="editName" placeholder="Enter your name" autocomplete="name">
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="profile-form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input type="email" id="editEmail" disabled>
+
+                    <small>
+                        Your account email cannot be changed here.
+                    </small>
+
+                </div>
+
+
+
+                <!-- PHONE -->
+
+                <div class="profile-form-group">
+
+                    <label for="editPhone">
+                        Phone Number
+                    </label>
+
+                    <input type="tel" id="editPhone" placeholder="Enter phone number" autocomplete="tel">
+
+                </div>
+
+
+
+                <!-- DOB -->
+
+                <div class="profile-form-group">
+
+                    <label for="editDob">
+                        Date of Birth
+                    </label>
+
+                    <input type="date" id="editDob">
+
+                </div>
+
+
+
+                <!-- ADDRESS -->
+
+                <div class="profile-form-group">
+
+                    <label for="editAddress">
+                        Address
+                    </label>
+
+                    <textarea id="editAddress" placeholder="Enter your address" rows="3"></textarea>
+
+                </div>
+
+
+
+                <!-- ABOUT -->
+
+                <div class="profile-form-group">
+
+                    <label for="editAbout">
+                        About You
+                    </label>
+
+                    <textarea id="editAbout" placeholder="Tell something about yourself..." rows="4"></textarea>
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div id="profileStatus" class="profile-status"></div>
+
+
+
+                <!-- BUTTONS -->
+
+                <div class="profile-form-actions">
+
+                    <button type="button" id="cancelProfileBtn" class="profile-cancel-btn">
+                        Cancel
+                    </button>
+
+
+                    <button type="submit" id="saveProfileBtn" class="profile-save-btn">
+                        💾 Save Changes
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script type="module">
+
+        import {
+            auth,
+            db
+        } from "./firebase.js";
+
+
+        import {
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+        import {
+            doc,
+            getDoc,
+            setDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+        /* =========================================
+           ELEMENTS
+        ========================================= */
+
+        const profileForm =
+            document.getElementById("profileForm");
+
+
+        const editName =
+            document.getElementById("editName");
+
+
+        const editEmail =
+            document.getElementById("editEmail");
+
+
+        const editPhone =
+            document.getElementById("editPhone");
+
+
+        const editDob =
+            document.getElementById("editDob");
+
+
+        const editAddress =
+            document.getElementById("editAddress");
+
+
+        const editAbout =
+            document.getElementById("editAbout");
+
+
+        const saveProfileBtn =
+            document.getElementById("saveProfileBtn");
+
+
+        const profileStatus =
+            document.getElementById("profileStatus");
+
+
+
+        let currentUser = null;
+
+
+
+        /* =========================================
+           LOAD USER
+        ========================================= */
+
+        onAuthStateChanged(
+            auth,
+            async (user) => {
+
+                if (!user) {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+
+                }
+
+
+                currentUser = user;
+
+
+                console.log(
+                    "👤 Edit Profile User:",
+                    user.email
+                );
+
+
+                console.log(
+                    "🔥 Edit Profile UID:",
+                    user.uid
+                );
+
+
+                editEmail.value =
+                    user.email || "";
+
+
+                try {
+
+                    const userRef =
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        );
+
+
+                    const userSnap =
+                        await getDoc(userRef);
+
+
+                    if (userSnap.exists()) {
+
+                        const data =
+                            userSnap.data();
+
+
+                        console.log(
+                            "📦 Existing Profile:",
+                            data
+                        );
+
+
+                        editName.value =
+                            data.name || "";
+
+
+                        editPhone.value =
+                            data.phone || "";
+
+
+                        editDob.value =
+                            data.dob || "";
+
+
+                        editAddress.value =
+                            data.address || "";
+
+
+                        editAbout.value =
+                            data.about || "";
+
+                    }
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "❌ Profile loading error:",
+                        error
+                    );
+
+                    showStatus(
+                        "Unable to load profile.",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================================
+           SAVE PROFILE
+        ========================================= */
+
+        profileForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                if (!currentUser) {
+
+                    showStatus(
+                        "Please login again.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                const name =
+                    editName.value.trim();
+
+
+                const phone =
+                    editPhone.value.trim();
+
+
+                const dob =
+                    editDob.value;
+
+
+                const address =
+                    editAddress.value.trim();
+
+
+                const about =
+                    editAbout.value.trim();
+
+
+
+                if (!name) {
+
+                    showStatus(
+                        "Please enter your name.",
+                        "error"
+                    );
+
+                    editName.focus();
+
+                    return;
+
+                }
+
+
+                saveProfileBtn.disabled =
+                    true;
+
+
+                saveProfileBtn.textContent =
+                    "⏳ Saving...";
+
+
+                try {
+
+                    const userRef =
+                        doc(
+                            db,
+                            "users",
+                            currentUser.uid
+                        );
+
+
+                    await setDoc(
+                        userRef,
+                        {
+
+                            name: name,
+
+                            email:
+                                currentUser.email || "",
+
+                            phone: phone,
+
+                            dob: dob,
+
+                            address: address,
+
+                            about: about,
+
+                            updatedAt:
+                                serverTimestamp()
+
+                        },
+                        {
+                            merge: true
+                        }
+                    );
+
+
+                    console.log(
+                        "✅ Profile saved successfully."
+                    );
+
+
+                    showStatus(
+                        "✅ Profile updated successfully!",
+                        "success"
+                    );
+
+
+                    saveProfileBtn.textContent =
+                        "✅ Saved";
+
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                "profile.html";
+
+                        },
+                        900
+                    );
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "❌ Profile save error:",
+                        error
+                    );
+
+
+                    showStatus(
+                        "❌ Could not save profile. Please try again.",
+                        "error"
+                    );
+
+
+                    saveProfileBtn.disabled =
+                        false;
+
+
+                    saveProfileBtn.textContent =
+                        "💾 Save Changes";
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================================
+           STATUS
+        ========================================= */
+
+        function showStatus(
+            message,
+            type
+        ) {
+
+            profileStatus.textContent =
+                message;
+
+
+            profileStatus.className =
+                "profile-status " + type;
+
+        }
+
+
+
+        /* =========================================
+           BACK
+        ========================================= */
+
+        document
+            .getElementById("backProfileBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "profile.html";
+
+                }
+            );
+
+
+
+        /* =========================================
+           CANCEL
+        ========================================= */
+
+        document
+            .getElementById("cancelProfileBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "profile.html";
+
+                }
+            );
+
+    </script>
+
+
+</body>
+
+</html>

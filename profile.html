@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile — LinkVault 2.0</title>
+
+    <meta name="theme-color" content="#050816">
+
+    <link rel="icon" type="image/png" href="icon.png">
+
+    <link rel="stylesheet" href="./profile.css">
+
+</head>
+
+
+<body class="profile-page">
+
+
+    <!-- =========================================
+         PROFILE PAGE
+    ========================================== -->
+
+    <main class="profile-wrapper">
+
+
+        <!-- Back -->
+
+        <button class="profile-back" id="backBtn">
+
+            ← Back to LinkVault
+
+        </button>
+
+
+        <!-- Profile Card -->
+
+        <section class="profile-card">
+
+
+            <!-- Avatar -->
+
+            <div class="profile-avatar-page">
+
+                👤
+
+            </div>
+
+
+            <div class="profile-title">
+
+                <span>
+                    LINKVAULT ACCOUNT
+                </span>
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    Manage your personal information
+                    and account details.
+                </p>
+
+            </div>
+
+
+            <!-- User Information -->
+
+            <div class="profile-info-grid">
+
+
+                <div class="profile-info-box">
+
+                    <span class="profile-info-icon">
+                        👤
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Full Name
+                        </small>
+
+                        <strong id="profileName">
+                            User
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-info-box">
+
+                    <span class="profile-info-icon">
+                        📧
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Email Address
+                        </small>
+
+                        <strong id="profileEmail">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-info-box">
+
+                    <span class="profile-info-icon">
+                        📱
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Phone
+                        </small>
+
+                        <strong id="profilePhone">
+                            Not added
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-info-box">
+
+                    <span class="profile-info-icon">
+                        🎂
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Date of Birth
+                        </small>
+
+                        <strong id="profileDob">
+                            Not added
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-info-box profile-full">
+
+                    <span class="profile-info-icon">
+                        📍
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Address
+                        </small>
+
+                        <strong id="profileAddress">
+                            Not added
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-info-box profile-full">
+
+                    <span class="profile-info-icon">
+                        📝
+                    </span>
+
+                    <div>
+
+                        <small>
+                            About
+                        </small>
+
+                        <strong id="profileAbout">
+                            No information added.
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Account Security -->
+
+            <div class="security-section">
+
+                <div>
+
+                    <span class="security-icon">
+                        🔐
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Account Security
+                        </strong>
+
+                        <small>
+                            Your LinkVault account is protected.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <span class="security-status">
+                    SECURE
+                </span>
+
+            </div>
+
+
+            <!-- Actions -->
+
+            <div class="profile-actions">
+
+                <button class="profile-edit-btn" id="editProfilePageBtn">
+
+                    ✏️ Edit Profile
+
+                </button>
+
+
+                <button class="profile-logout-btn" id="profilePageLogoutBtn">
+
+                    🚪 Logout
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+    <script>
+
+        const darkMode =
+            localStorage.getItem(
+                "linkvault_dark_mode"
+            );
+
+        if (darkMode === "false") {
+
+            document.body.classList.add(
+                "light-mode"
+            );
+
+        }
+
+    </script>
+
+
+    <!-- =========================================
+         FIREBASE PROFILE SCRIPT
+    ========================================== -->
+
+    <script type="module">
+
+        import {
+            auth,
+            db
+        } from "./firebase.js";
+
+        import {
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+        import {
+            doc,
+            getDoc,
+            setDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+        const profileName =
+            document.getElementById("profileName");
+
+        const profileEmail =
+            document.getElementById("profileEmail");
+
+        const profilePhone =
+            document.getElementById("profilePhone");
+
+        const profileDob =
+            document.getElementById("profileDob");
+
+        const profileAddress =
+            document.getElementById("profileAddress");
+
+        const profileAbout =
+            document.getElementById("profileAbout");
+
+
+        /* =========================================
+           LOAD CURRENT USER
+        ========================================= */
+
+        onAuthStateChanged(
+            auth,
+            async (user) => {
+
+                if (!user) {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+                }
+
+
+                console.log(
+                    "👤 Profile User:",
+                    user.email
+                );
+
+                console.log(
+                    "🔥 Profile UID:",
+                    user.uid
+                );
+
+
+                /* EMAIL */
+
+                profileEmail.textContent =
+                    user.email ||
+                    "Not available";
+
+
+                /* FIRESTORE PROFILE */
+
+                try {
+
+                    const userRef =
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        );
+
+
+                    const userSnap =
+                        await getDoc(userRef);
+
+
+                    if (userSnap.exists()) {
+
+                        const data =
+                            userSnap.data();
+
+
+                        console.log(
+                            "📦 Profile Data:",
+                            data
+                        );
+
+
+                        profileName.textContent =
+                            data.name ||
+                            user.displayName ||
+                            "User";
+
+
+                        profilePhone.textContent =
+                            data.phone ||
+                            "Not added";
+
+
+                        profileDob.textContent =
+                            data.dob ||
+                            "Not added";
+
+
+                        profileAddress.textContent =
+                            data.address ||
+                            "Not added";
+
+
+                        profileAbout.textContent =
+                            data.about ||
+                            "No information added.";
+
+                    }
+                    else {
+
+                        console.log(
+                            "ℹ️ No profile document found. Creating profile..."
+                        );
+
+                        const defaultName =
+                            user.displayName ||
+                            "User";
+
+                        const profileData = {
+
+                            name: defaultName,
+
+                            email: user.email || "",
+
+                            phone: "",
+
+                            dob: "",
+
+                            address: "",
+
+                            about: "",
+
+                            createdAt: serverTimestamp()
+
+                        };
+
+
+                        await setDoc(
+                            userRef,
+                            profileData
+                        );
+
+
+                        console.log(
+                            "✅ Profile document created."
+                        );
+
+
+                        profileName.textContent =
+                            defaultName;
+
+                        profilePhone.textContent =
+                            "Not added";
+
+                        profileDob.textContent =
+                            "Not added";
+
+                        profileAddress.textContent =
+                            "Not added";
+
+                        profileAbout.textContent =
+                            "No information added.";
+
+                    }
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "❌ Profile loading error:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           BACK TO LINKVAULT
+        ========================================= */
+
+        document
+            .getElementById("backBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        /* =========================================
+           EDIT PROFILE
+        ========================================= */
+
+        document
+            .getElementById("editProfilePageBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "edit-profile.html";
+
+                }
+            );
+
+
+        /* =========================================
+           LOGOUT
+        ========================================= */
+
+        document
+            .getElementById("profilePageLogoutBtn")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    try {
+
+                        await signOut(auth);
+
+                        window.location.href =
+                            "index.html";
+
+                    }
+                    catch (error) {
+
+                        console.error(
+                            "❌ Logout error:",
+                            error
+                        );
+
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>

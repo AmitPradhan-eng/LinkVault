@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Private Space — LinkVault</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#050816">
+    <link rel="icon" type="image/png" href="icon.png">
+
+</head>
+
+<body class="private-space-page">
+
+    <!-- =========================================
+         PRIVATE SPACE
+    ========================================== -->
+
+    <main class="private-space-wrapper">
+
+        <header class="private-space-header">
+
+            <button
+                class="private-back-btn"
+                id="privateBackBtn"
+            >
+                ← Dashboard
+            </button>
+
+            <div class="private-heading">
+
+                <div class="private-lock">
+                    🔐
+                </div>
+
+                <div>
+
+                    <span>
+                        LINKVAULT 2.0
+                    </span>
+
+                    <h1>
+                        Private Space
+                    </h1>
+
+                    <p>
+                        Your protected links stay here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================
+             LOCK SCREEN
+        ====================================== -->
+
+        <section
+            class="private-lock-screen"
+            id="privateLockScreen"
+        >
+
+            <div class="private-lock-card">
+
+                <div class="private-big-lock">
+                    🔐
+                </div>
+
+                <span class="private-badge">
+                    PRIVATE & PROTECTED
+                </span>
+
+                <h2>
+                    Private Space Locked
+                </h2>
+
+                <p>
+                    Enter your 4-digit PIN to access
+                    your private links.
+                </p>
+
+
+                <div class="private-pin-inputs">
+
+                    <input
+                        type="password"
+                        maxlength="1"
+                        inputmode="numeric"
+                        class="private-pin"
+                    >
+
+                    <input
+                        type="password"
+                        maxlength="1"
+                        inputmode="numeric"
+                        class="private-pin"
+                    >
+
+                    <input
+                        type="password"
+                        maxlength="1"
+                        inputmode="numeric"
+                        class="private-pin"
+                    >
+
+                    <input
+                        type="password"
+                        maxlength="1"
+                        inputmode="numeric"
+                        class="private-pin"
+                    >
+
+                </div>
+
+
+                <p
+                    class="private-pin-error"
+                    id="privatePinError"
+                ></p>
+
+
+                <button
+                    class="private-unlock-btn"
+                    id="privateUnlockBtn"
+                >
+                    🔓 Unlock Private Space
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             PRIVATE CONTENT
+        ====================================== -->
+
+        <section
+            class="private-content"
+            id="privateContent"
+        >
+
+            <div class="private-content-header">
+
+                <div>
+
+                    <span>
+                        SECURE COLLECTION
+                    </span>
+
+                    <h2>
+                        Your Private Links
+                    </h2>
+
+                    <p>
+                        Only you can access these links.
+                    </p>
+
+                </div>
+
+                <button
+                    class="private-add-btn"
+                    id="privateAddBtn"
+                >
+                    + Add Private Link
+                </button>
+
+            </div>
+
+
+            <div
+                class="private-links-container"
+                id="privateLinksContainer"
+            >
+
+                <div class="private-empty">
+
+                    <div>
+                        🔒
+                    </div>
+
+                    <h3>
+                        No Private Links Yet
+                    </h3>
+
+                    <p>
+                        Links you save here will remain
+                        separate from your normal collection.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         ADD PRIVATE LINK POPUP
+    ========================================== -->
+
+    <div
+        class="private-popup"
+        id="privatePopup"
+    >
+
+        <div class="private-popup-card">
+
+            <h2>
+                🔐 Add Private Link
+            </h2>
+
+            <p>
+                This link will be stored separately
+                from your normal links.
+            </p>
+
+
+            <input
+                type="text"
+                id="privateLinkName"
+                placeholder="Link Name"
+            >
+
+
+            <input
+                type="url"
+                id="privateLinkURL"
+                placeholder="Paste URL"
+            >
+
+
+            <textarea
+                id="privateLinkNote"
+                placeholder="Private note (optional)"
+                rows="3"
+            ></textarea>
+
+
+            <div class="private-popup-actions">
+
+                <button
+                    id="privateSaveBtn"
+                    class="private-save-btn"
+                >
+                    🔒 Save Private Link
+                </button>
+
+                <button
+                    id="privateCloseBtn"
+                    class="private-close-btn"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script type="module" src="private-space.js"></script>
+
+
+</body>
+
+</html>

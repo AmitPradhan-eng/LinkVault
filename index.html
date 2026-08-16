@@ -2,81 +2,112 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LinkVault</title>
+    <title>LinkVault 2.0</title>
 
     <link rel="stylesheet" href="style.css">
+    
+
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#111111">
+
+    <meta name="theme-color" content="#050816">
+
     <link rel="icon" type="image/png" href="icon.png">
-    <style>
-        #prankLoading {
-            position: fixed;
-            inset: 0;
-            z-index: 200000;
-            background: #050816;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        #prankLoading .loader-box {
-            text-align: center;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        #prankLoading .loader-logo {
-            font-size: 55px;
-            margin-bottom: 15px;
-        }
-
-        #prankLoading p {
-            color: #94a3b8;
-        }
-    </style>
 </head>
 
+
 <body>
+
+
+    <!-- =========================================
+     LOADING SCREEN
+========================================= -->
+
     <div id="prankLoading">
+
         <div class="loader-box">
-            <div class="loader-logo">🔗</div>
-            <h2>LinkVault</h2>
-            <p>Checking access...</p>
+
+            <div class="loader-logo">
+                🔗
+            </div>
+
+            <h2>
+                LinkVault
+            </h2>
+
+            <p>
+                Checking access...
+            </p>
+
         </div>
+
     </div>
 
-    <!-- PRANK SUBSCRIPTION POPUP -->
+
+
+    <!-- =========================================
+     PRANK SUBSCRIPTION
+========================================= -->
 
     <div id="prankOverlay" class="prank-overlay">
 
         <div class="prank-card">
 
-            <div class="prank-icon">💎</div>
+            <div class="prank-icon">
+                💎
+            </div>
 
             <div class="prank-badge">
                 PREMIUM REQUIRED
             </div>
 
-            <h1>Unlock LinkVault Premium</h1>
+            <h1>
+                Unlock LinkVault Premium
+            </h1>
 
             <p class="prank-subtitle">
                 Your free access has expired.
             </p>
 
             <div class="price-box">
-                <span class="currency">₹</span>
-                <span class="price">99</span>
-                <span class="period">/ month</span>
+
+                <span class="currency">
+                    ₹
+                </span>
+
+                <span class="price">
+                    99
+                </span>
+
+                <span class="period">
+                    / month
+                </span>
+
             </div>
 
             <div class="premium-features">
-                <div>✨ Unlimited Link Storage</div>
-                <div>🔐 Private Space</div>
-                <div>⚡ Faster Access</div>
-                <div>☁️ Secure Cloud Backup</div>
+
+                <div>
+                    ✨ Unlimited Link Storage
+                </div>
+
+                <div>
+                    🔐 Private Space
+                </div>
+
+                <div>
+                    ⚡ Faster Access
+                </div>
+
+                <div>
+                    ☁️ Secure Cloud Backup
+                </div>
+
             </div>
 
             <button id="upgradeBtn" class="upgrade-btn">
@@ -92,18 +123,26 @@
     </div>
 
 
-    <!-- PRANK REVEAL -->
+
+    <!-- =========================================
+     PRANK REVEAL
+========================================= -->
 
     <div id="prankReveal" class="prank-overlay">
 
         <div class="reveal-card">
 
-            <div class="reveal-emoji">😂</div>
+            <div class="reveal-emoji">
+                😂
+            </div>
 
-            <h1>YOU GOT PRANKED!</h1>
+            <h1>
+                YOU GOT PRANKED!
+            </h1>
 
             <p>
-                Don't worry 😎<br>
+                Don't worry 😎
+                <br>
                 LinkVault is still completely free.
             </p>
 
@@ -115,92 +154,707 @@
 
     </div>
 
-    <!-- Splash Screen -->
-    <div id="splash">
 
-        <div class="splash-content">
 
-            <div class="logo">🔗</div>
+    <!-- =========================================
+     SIDEBAR
+========================================= -->
 
-            <h1>LinkVault</h1>
+    <aside class="sidebar" id="sidebar">
 
-            <p>Save everything in one place</p>
 
-            <div class="loader"></div>
+        <!-- Logo -->
+
+        <div class="sidebar-logo">
+
+            <div class="sidebar-logo-icon">
+                🔗
+            </div>
+
+            <div>
+
+                <h2>
+                    LinkVault
+                </h2>
+
+                <span>
+                    2.0
+                </span>
+
+            </div>
 
         </div>
 
-    </div>
 
-    <!-- Main App -->
+
+        <!-- Profile -->
+
+        <div class="sidebar-profile">
+
+            <div class="profile-avatar">
+                👤
+            </div>
+
+            <div class="profile-info">
+
+                <strong id="sidebarUserName">
+                    User
+                </strong>
+
+                <small id="sidebarUserEmail">
+                    Account
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Navigation -->
+
+        <nav class="sidebar-menu">
+
+
+            <button class="sidebar-item active" id="homeBtn">
+
+                <span>
+                    🏠
+                </span>
+
+                <div>
+
+                    <strong>
+                        Home
+                    </strong>
+
+                    <small>
+                        Dashboard
+                    </small>
+
+                </div>
+
+            </button>
+
+
+
+            <button class="sidebar-item" id="navFav">
+
+                <span>
+                    ⭐
+                </span>
+
+                <div>
+
+                    <strong>
+                        Favorites
+                    </strong>
+
+                    <small>
+                        Your favorite links
+                    </small>
+
+                </div>
+
+            </button>
+
+
+
+            <button class="sidebar-item" id="sidebarPrivateSpaceBtn">
+
+                <span>
+                    🛍️
+                </span>
+
+                <div>
+
+                    <strong>
+                        Products
+                    </strong>
+
+                    <small>
+                        Saved products
+                    </small>
+
+                </div>
+
+            </button>
+
+
+
+            <button class="sidebar-item">
+
+                <span>
+                    📚
+                </span>
+
+                <div>
+
+                    <strong>
+                        Study
+                    </strong>
+
+                    <small>
+                        Study resources
+                    </small>
+
+                </div>
+
+            </button>
+
+
+
+            <button class="sidebar-item">
+
+                <span>
+                    💼
+                </span>
+
+                <div>
+
+                    <strong>
+                        Work
+                    </strong>
+
+                    <small>
+                        Work resources
+                    </small>
+
+                </div>
+
+            </button>
+
+
+
+           
+
+
+        </nav>
+
+
+
+        <!-- Bottom Navigation -->
+
+        <div class="sidebar-bottom">
+
+
+            <button class="sidebar-item" id="settingsBtn">
+
+                <span>
+                    ⚙️
+                </span>
+
+                <div>
+
+                    <strong>
+                        Settings
+                    </strong>
+
+                    <small>
+                        Account & preferences
+                    </small>
+
+                </div>
+
+            </button>
+
+
+
+            <button class="sidebar-item logout-item" id="logoutBtn">
+
+                <span>
+                    🚪
+                </span>
+
+                <div>
+
+                    <strong>
+                        Logout
+                    </strong>
+
+                    <small>
+                        Sign out securely
+                    </small>
+
+                </div>
+
+            </button>
+
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================================
+     MOBILE MENU
+========================================= -->
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        ☰
+    </button>
+
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+
+
+    <!-- =========================================
+     MAIN APPLICATION
+========================================= -->
+
     <div class="app">
 
-        <header>
-            <h1>🔗 LinkVault</h1>
-            <p>Save everything in one place</p>
+
+        <!-- Dashboard Header -->
+
+        <header class="dashboard-header">
+
+            <div class="dashboard-header-left">
+
+                <p class="dashboard-eyebrow">
+                    WELCOME BACK 👋
+                </p>
+
+                <h1>
+                    Your LinkVault
+                </h1>
+
+                <p class="dashboard-subtitle">
+                    Everything important, safely organized
+                    in one place.
+                </p>
+
+            </div>
+
+            <div class="dashboard-header-actions">
+
+                <!-- Profile -->
+                <button class="top-profile-btn" id="profileToggleBtn" title="Profile">
+                    👤
+                </button>
+
+                <!-- PROFILE MENU -->
+                <div class="profile-menu">
+
+                    <button class="profile-button" id="profileButton">
+                        <div class="profile-avatar-top">
+                            👤
+                        </div>
+
+                        <span class="profile-chevron">⌄</span>
+                    </button>
+
+                    <div class="profile-dropdown" id="profileDropdown">
+
+                        <div class="profile-dropdown-header">
+
+                            <div class="profile-avatar-large">
+                                👤
+                            </div>
+
+                            <div class="profile-dropdown-user">
+
+                                <strong id="profileMenuName">
+                                    User
+                                </strong>
+
+                                <small id="profileMenuEmail">
+                                    Account
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div class="profile-divider"></div>
+
+                        <button class="profile-dropdown-item" id="profileBtn">
+                            <span>👤</span>
+                            <div>
+                                <strong>My Profile</strong>
+                                <small>View your profile</small>
+                            </div>
+                        </button>
+
+                        <button class="profile-dropdown-item" id="editProfileBtn">
+                            <span>✏️</span>
+                            <div>
+                                <strong>Edit Profile</strong>
+                                <small>Update your information</small>
+                            </div>
+                        </button>
+
+                        <button class="profile-dropdown-item" id="privateSpaceBtn">
+                            <span>🔐</span>
+                            <div>
+                                <strong>Private Space</strong>
+                                <small>Your protected links</small>
+                            </div>
+                        </button>
+
+                        <button class="profile-dropdown-item" id="profileSettingsBtn">
+                            <span>⚙️</span>
+                            <div>
+                                <strong>Settings</strong>
+                                <small>Account preferences</small>
+                            </div>
+                        </button>
+
+                        <div class="profile-divider"></div>
+
+                        <button class="profile-dropdown-item profile-logout" id="profileLogoutBtn">
+                            <span>🚪</span>
+                            <div>
+                                <strong>Logout</strong>
+                                <small>Sign out securely</small>
+                            </div>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </header>
 
-        <div class="stats">
-            <div class="stat-card">
-                <h2 id="totalLinks">0</h2>
-                <p>Total Links</p>
+
+
+        <!-- =====================================
+         STATS
+    ====================================== -->
+
+        <section class="dashboard-stats">
+
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-icon">
+                    🔗
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Links
+                    </span>
+
+                    <strong id="totalLinks">
+                        0
+                    </strong>
+
+                </div>
+
             </div>
-        </div>
 
-        <div class="search-box">
-            <input type="text" id="search" placeholder="🔍 Search your links...">
-        </div>
 
-        <div class="filter-buttons">
 
-            <button id="allBtn">
-                📂 All Links
-            </button>
+            <div class="dashboard-stat-card">
 
-            <button id="favBtn">
-                ⭐ Favorites
-            </button>
+                <div class="stat-icon purple">
+                    ⭐
+                </div>
 
-        </div>
+                <div>
 
-        <div id="linksContainer">
-            <!-- Cards will appear here -->
-        </div>
+                    <span>
+                        Favorites
+                    </span>
+
+                    <strong id="favoriteCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-icon green">
+                    📅
+                </div>
+
+                <div>
+
+                    <span>
+                        Saved Today
+                    </span>
+
+                    <strong id="todayCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+         SEARCH
+    ====================================== -->
+
+        <section class="dashboard-search">
+
+            <div class="search-icon">
+                🔍
+            </div>
+
+            <input type="text" id="search" placeholder="Search your saved links...">
+
+        </section>
+
+
+
+        <!-- =====================================
+         CATEGORIES
+    ====================================== -->
+
+        <section class="dashboard-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        ORGANIZE
+                    </span>
+
+                    <h2>
+                        Categories
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="category-grid">
+
+
+                <button class="category-card shopping">
+
+                    <span class="category-icon">
+                        🛍️
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Shopping
+                        </strong>
+
+                        <small>
+                            Products & deals
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+
+                <button class="category-card study">
+
+                    <span class="category-icon">
+                        📚
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Study
+                        </strong>
+
+                        <small>
+                            Learning resources
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+
+                <button class="category-card work">
+
+                    <span class="category-icon">
+                        💼
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Work
+                        </strong>
+
+                        <small>
+                            Work resources
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+
+                <button class="category-card personal">
+
+                    <span class="category-icon">
+                        ❤️
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Personal
+                        </strong>
+
+                        <small>
+                            Personal links
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+         RECENT LINKS
+    ====================================== -->
+
+        <section class="dashboard-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        YOUR COLLECTION
+                    </span>
+
+                    <h2>
+                        Recent Links
+                    </h2>
+
+                </div>
+
+
+                <button id="allBtn" class="view-all-btn">
+                    View All →
+                </button>
+
+            </div>
+
+
+
+            <div id="linksContainer">
+
+                <!-- Firebase links appear here -->
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+         FAVORITES BUTTON
+    ====================================== -->
+
+        <button id="favBtn" class="floating-filter">
+            ⭐ Favorites
+        </button>
+
+
+
+        <!-- =====================================
+         ADD LINK BUTTON
+    ====================================== -->
 
         <button class="fab" id="openPopup">
             +
         </button>
 
+
     </div>
 
-    <!-- Add Link Popup -->
+
+
+    <!-- =========================================
+     ADD LINK POPUP
+========================================= -->
+
     <div class="popup" id="popup">
 
         <div class="popup-content">
 
-            <h2>Add New Link</h2>
+            <h2>
+                Add New Link
+            </h2>
+
 
             <input type="text" id="linkName" placeholder="Link Name">
 
+
             <input type="url" id="linkURL" placeholder="Paste URL">
+
 
             <textarea id="linkNote" placeholder="Add a note (optional)" rows="3"></textarea>
 
+
             <select id="category">
-                <option>Shopping</option>
-                <option>Study</option>
-                <option>Work</option>
-                <option>Personal</option>
+
+                <option>
+                    Shopping
+                </option>
+
+                <option>
+                    Study
+                </option>
+
+                <option>
+                    Work
+                </option>
+
+                <option>
+                    Personal
+                </option>
+
             </select>
 
+
             <label class="favorite-check">
+
                 <input type="checkbox" id="favorite">
+
                 ⭐ Add to Favorites
+
             </label>
+
 
             <button id="saveBtn">
                 Save Link
             </button>
+
 
             <button id="closePopup">
                 Cancel
@@ -210,27 +864,52 @@
 
     </div>
 
-    <!-- Edit Popup -->
+
+
+    <!-- =========================================
+     EDIT LINK POPUP
+========================================= -->
+
     <div class="popup" id="editPopup">
 
         <div class="popup-content">
 
-            <h2>Edit Link</h2>
+            <h2>
+                Edit Link
+            </h2>
+
 
             <input type="text" id="editName" placeholder="Link Name">
 
+
             <input type="url" id="editURL" placeholder="Paste URL">
 
+
             <select id="editCategory">
-                <option>Shopping</option>
-                <option>Study</option>
-                <option>Work</option>
-                <option>Personal</option>
+
+                <option>
+                    Shopping
+                </option>
+
+                <option>
+                    Study
+                </option>
+
+                <option>
+                    Work
+                </option>
+
+                <option>
+                    Personal
+                </option>
+
             </select>
+
 
             <button id="updateBtn">
                 Update Link
             </button>
+
 
             <button id="closeEdit">
                 Cancel
@@ -240,39 +919,86 @@
 
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
 
-        <button id="homeBtn">
-            🏠<br>Home
-        </button>
 
-        <button id="navFav">
-            ⭐<br>Favorites
-        </button>
+    <!-- =========================================
+     JAVASCRIPT
+========================================= -->
 
-        <button id="settingsBtn">
-            ⚙️<br>Settings
-        </button>
-
-    </nav>
-
-    <!-- Main Script -->
-    <!-- <script type="module" src="maintenance.js"></script> -->
-    <script>
-        console.log("🔥 MAINTENANCE TEST RUNNING");
-    </script>
     <script type="module" src="script.js"></script>
 
-    <!-- Ser
-     vice Worker -->
+
+
+    <!-- =========================================
+     SERVICE WORKER
+========================================= -->
+
     <script>
+
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("service-worker.js")
-                .then(() => console.log("Service Worker Registered"))
-                .catch(err => console.log(err));
+
+            window.addEventListener(
+                "load",
+                () => {
+
+                    navigator.serviceWorker
+                        .register("service-worker.js")
+                        .then(() => {
+
+                            console.log(
+                                "Service Worker Registered"
+                            );
+
+                        })
+                        .catch(error => {
+
+                            console.error(error);
+
+                        });
+
+                }
+            );
+
         }
+
     </script>
+    <!-- =========================================
+     DELETE CONFIRMATION MODAL
+========================================= -->
+
+    <div class="delete-modal" id="deleteModal">
+
+        <div class="delete-modal-card">
+
+            <div class="delete-modal-icon">
+                🗑️
+            </div>
+
+            <h2>Delete this link?</h2>
+
+            <p>
+                Are you sure you want to delete
+                <strong id="deleteLinkName">this link</strong>?
+                <br>
+                This action cannot be undone.
+            </p>
+
+            <div class="delete-modal-actions">
+
+                <button id="cancelDeleteBtn">
+                    Cancel
+                </button>
+
+                <button id="confirmDeleteBtn">
+                    🗑 Delete Link
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 
 </body>
 

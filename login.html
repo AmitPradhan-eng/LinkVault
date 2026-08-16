@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - LinkVault</title>
-<link rel="stylesheet" href="auth.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LinkVault</title>
+    <link rel="stylesheet" href="auth.css">
 </head>
+
 <body>
 
-<div class="box">
+    <div class="box">
 
-<h1>🔗 LinkVault</h1>
+        <h1>🔗 LinkVault</h1>
 
-<h2>Login</h2>
+        <h2>Login</h2>
 
-<input type="email" id="loginEmail" placeholder="Email">
+        <input type="email" id="loginEmail" placeholder="Email">
 
-<input type="password" id="loginPassword" placeholder="Password">
+        <input type="password" id="loginPassword" placeholder="Password">
 
-<button onclick="login()">Login</button>
+        <a href="forgot-password.html">
+            Forgot Password?
+        </a>
 
-<p>
-Don't have an account?
-<a href="signup.html">Create Account</a>
-</p>
+        <button onclick="login()">Login</button>
 
-</div>
-<script type="module" src="maintenance.js"></script>
-<script type="module" src="auth.js"></script>
+        <p>
+            Don't have an account?
+            <a href="signup.html">Create Account</a>
+        </p>
+
+    </div>
+    <script type="module" src="maintenance.js"></script>
+    <script type="module" src="auth.js"></script>
 
 </body>
+
 </html>

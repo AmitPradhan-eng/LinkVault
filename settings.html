@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings — LinkVault 2.0</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#050816">
+
+</head>
+
+
+<body class="settings-page">
+
+
+    <!-- =========================================
+         SETTINGS WRAPPER
+    ========================================== -->
+
+    <main class="settings-wrapper">
+
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <header class="settings-header">
+
+
+            <button id="backSettingsBtn" class="settings-back-btn">
+                ← Back to LinkVault
+            </button>
+
+
+            <div class="settings-heading">
+
+                <span>
+                    LINKVAULT CONTROL CENTER
+                </span>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Manage your account, preferences
+                    and LinkVault experience.
+                </p>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================
+             ACCOUNT
+        ====================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="settings-section-title">
+
+                <div class="settings-title-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <span>
+                        ACCOUNT
+                    </span>
+
+                    <h2>
+                        Account Settings
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="settings-card">
+
+
+                <div class="settings-profile-row">
+
+
+                    <div class="settings-avatar">
+                        👤
+                    </div>
+
+
+                    <div class="settings-profile-info">
+
+                        <strong id="settingsUserName">
+                            User
+                        </strong>
+
+                        <small id="settingsUserEmail">
+                            Loading...
+                        </small>
+
+                    </div>
+
+
+                    <button id="settingsProfileBtn" class="settings-outline-btn">
+                        Edit Profile
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             SECURITY
+        ====================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="settings-section-title">
+
+                <div class="settings-title-icon security">
+                    🔐
+                </div>
+
+                <div>
+
+                    <span>
+                        SECURITY
+                    </span>
+
+                    <h2>
+                        Account Security
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="settings-card">
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            🔑
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Password
+                            </strong>
+
+                            <small>
+                                Your account password is managed
+                                securely by Firebase Authentication.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="settings-status secure">
+                        SECURE
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="settings-divider"></div>
+
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            🛡️
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Account Protection
+                            </strong>
+
+                            <small>
+                                Keep your LinkVault account protected.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="settings-status active">
+                        ACTIVE
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="settings-divider"></div>
+
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            🔒
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Private Space
+                            </strong>
+
+                            <small>
+                                Access your protected links.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <button id="privateSpaceSettingsBtn" class="settings-arrow-btn">
+                        →
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             NOTIFICATIONS
+        ====================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="settings-section-title">
+
+                <div class="settings-title-icon notification">
+                    🔔
+                </div>
+
+                <div>
+
+                    <span>
+                        PREFERENCES
+                    </span>
+
+                    <h2>
+                        Notifications
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="settings-card">
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            🔔
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                App Notifications
+                            </strong>
+
+                            <small>
+                                Allow LinkVault to show notifications.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="notificationToggle">
+
+                        <span></span>
+
+                    </label>
+
+
+                </div>
+
+
+
+                <div class="settings-divider"></div>
+
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            💾
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Save Confirmation
+                            </strong>
+
+                            <small>
+                                Show confirmation after saving a link.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="saveConfirmationToggle">
+
+                        <span></span>
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             APPEARANCE
+        ====================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="settings-section-title">
+
+                <div class="settings-title-icon appearance">
+                    🎨
+                </div>
+
+                <div>
+
+                    <span>
+                        EXPERIENCE
+                    </span>
+
+                    <h2>
+                        Appearance
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="settings-card">
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            🌙
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Dark Mode
+                            </strong>
+
+                            <small>
+                                Premium dark interface is enabled.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="darkModeToggle" checked>
+
+                        <span></span>
+
+                    </label>
+
+
+                </div>
+
+
+
+                <div class="settings-divider"></div>
+
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            ✨
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Premium Animations
+                            </strong>
+
+                            <small>
+                                Enable smooth LinkVault animations.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="animationToggle" checked>
+
+                        <span></span>
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             DATA
+        ====================================== -->
+
+        <section class="settings-section">
+
+
+            <div class="settings-section-title">
+
+                <div class="settings-title-icon data">
+                    ☁️
+                </div>
+
+                <div>
+
+                    <span>
+                        STORAGE
+                    </span>
+
+                    <h2>
+                        Data & Storage
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="settings-card">
+
+
+                <div class="settings-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon">
+                            🔗
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Your Links
+                            </strong>
+
+                            <small>
+                                Your saved links are securely stored
+                                in your Firebase account.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <span id="settingsLinkCount" class="settings-count">
+                        0 Links
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="settings-divider"></div>
+
+
+
+                <div class="settings-option danger-option">
+
+
+                    <div class="settings-option-left">
+
+                        <div class="settings-option-icon danger">
+                            ⚠️
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Reset Local Settings
+                            </strong>
+
+                            <small>
+                                Reset your LinkVault preferences
+                                on this device.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <button id="resetSettingsBtn" class="settings-danger-btn">
+                        Reset
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             ABOUT
+        ====================================== -->
+
+        <section class="settings-about">
+
+
+            <div class="settings-about-logo">
+                🔗
+            </div>
+
+
+            <div>
+
+                <strong>
+                    LinkVault
+                </strong>
+
+                <span>
+                    Version 2.0
+                </span>
+
+                <small>
+                    Everything important,
+                    safely organized.
+                </small>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             LOGOUT
+        ====================================== -->
+
+        <button id="settingsLogoutBtn" class="settings-logout-btn">
+
+            🚪
+
+            <span>
+                Logout Securely
+            </span>
+
+        </button>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script type="module">
+
+        import {
+            auth,
+            db
+        } from "./firebase.js";
+
+
+        import {
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+        import {
+            collection,
+            getDocs,
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+        /* =========================================
+           ELEMENTS
+        ========================================== */
+
+        const settingsUserName =
+            document.getElementById(
+                "settingsUserName"
+            );
+
+
+        const settingsUserEmail =
+            document.getElementById(
+                "settingsUserEmail"
+            );
+
+
+        const settingsLinkCount =
+            document.getElementById(
+                "settingsLinkCount"
+            );
+
+
+        const notificationToggle =
+            document.getElementById(
+                "notificationToggle"
+            );
+
+
+        const saveConfirmationToggle =
+            document.getElementById(
+                "saveConfirmationToggle"
+            );
+
+
+        const darkModeToggle =
+            document.getElementById(
+                "darkModeToggle"
+            );
+
+
+        const animationToggle =
+            document.getElementById(
+                "animationToggle"
+            );
+
+
+
+        /* =========================================
+           APPLY THEME
+        ========================================== */
+
+        function applyTheme() {
+
+            if (darkModeToggle.checked) {
+
+                document.body.classList.remove(
+                    "light-mode"
+                );
+
+            } else {
+
+                document.body.classList.add(
+                    "light-mode"
+                );
+
+            }
+
+        }
+
+
+
+        /* =========================================
+           LOAD SETTINGS
+        ========================================== */
+
+        function loadSettings() {
+
+
+            /* NOTIFICATIONS */
+
+            notificationToggle.checked =
+                localStorage.getItem(
+                    "linkvault_notifications"
+                ) !== "false";
+
+
+
+            /* SAVE CONFIRMATION */
+
+            saveConfirmationToggle.checked =
+                localStorage.getItem(
+                    "linkvault_save_confirmation"
+                ) !== "false";
+
+
+
+            /* DARK MODE */
+
+            const savedDarkMode =
+                localStorage.getItem(
+                    "linkvault_dark_mode"
+                );
+
+
+            if (savedDarkMode === null) {
+
+                /*
+                 * First time:
+                 * Dark mode ON by default
+                 */
+
+                darkModeToggle.checked = true;
+
+            } else {
+
+                darkModeToggle.checked =
+                    savedDarkMode === "true";
+
+            }
+
+
+
+            /* ANIMATIONS */
+
+            animationToggle.checked =
+                localStorage.getItem(
+                    "linkvault_animations"
+                ) !== "false";
+
+
+
+            /* APPLY CURRENT THEME */
+
+            applyTheme();
+
+        }
+
+
+        loadSettings();
+
+
+
+        /* =========================================
+           NOTIFICATION TOGGLE
+        ========================================== */
+
+        notificationToggle.addEventListener(
+            "change",
+            () => {
+
+                localStorage.setItem(
+                    "linkvault_notifications",
+                    notificationToggle.checked
+                        ? "true"
+                        : "false"
+                );
+
+            }
+        );
+
+
+
+        /* =========================================
+           SAVE CONFIRMATION TOGGLE
+        ========================================== */
+
+        saveConfirmationToggle.addEventListener(
+            "change",
+            () => {
+
+                localStorage.setItem(
+                    "linkvault_save_confirmation",
+                    saveConfirmationToggle.checked
+                        ? "true"
+                        : "false"
+                );
+
+            }
+        );
+
+
+
+        /* =========================================
+           DARK MODE TOGGLE
+        ========================================== */
+
+        darkModeToggle.addEventListener(
+            "change",
+            () => {
+
+
+                /* SAVE PREFERENCE */
+
+                localStorage.setItem(
+                    "linkvault_dark_mode",
+                    darkModeToggle.checked
+                        ? "true"
+                        : "false"
+                );
+
+
+                /* APPLY THEME */
+
+                applyTheme();
+
+            }
+        );
+
+
+
+        /* =========================================
+           ANIMATION TOGGLE
+        ========================================== */
+
+        animationToggle.addEventListener(
+            "change",
+            () => {
+
+                localStorage.setItem(
+                    "linkvault_animations",
+                    animationToggle.checked
+                        ? "true"
+                        : "false"
+                );
+
+            }
+        );
+
+
+
+        /* =========================================
+           AUTH
+        ========================================== */
+
+        onAuthStateChanged(
+            auth,
+            async (user) => {
+
+
+                if (!user) {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "⚙️ Settings User:",
+                    user.email
+                );
+
+
+
+                /* =================================
+                   EMAIL
+                ================================= */
+
+                settingsUserEmail.textContent =
+                    user.email ||
+                    "Account";
+
+
+
+                /* =================================
+                   LOAD FIRESTORE PROFILE
+                ================================= */
+
+                try {
+
+                    const profileRef =
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        );
+
+
+                    const profileSnap =
+                        await getDoc(
+                            profileRef
+                        );
+
+
+                    if (profileSnap.exists()) {
+
+                        const profileData =
+                            profileSnap.data();
+
+
+                        settingsUserName.textContent =
+                            profileData.name ||
+                            user.displayName ||
+                            "User";
+
+                    } else {
+
+                        settingsUserName.textContent =
+                            user.displayName ||
+                            "User";
+
+                    }
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "❌ Unable to load profile name:",
+                        error
+                    );
+
+
+                    settingsUserName.textContent =
+                        user.displayName ||
+                        "User";
+
+                }
+
+
+
+                /* =================================
+                   LOAD LINKS COUNT
+                ================================= */
+
+                try {
+
+                    const linksRef =
+                        collection(
+                            db,
+                            "users",
+                            user.uid,
+                            "links"
+                        );
+
+
+                    const snapshot =
+                        await getDocs(
+                            linksRef
+                        );
+
+
+                    settingsLinkCount.textContent =
+                        `${snapshot.size} ${snapshot.size === 1
+                            ? "Link"
+                            : "Links"
+                        }`;
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "❌ Unable to load link count:",
+                        error
+                    );
+
+
+                    settingsLinkCount.textContent =
+                        "Unavailable";
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================================
+           BACK TO LINKVAULT
+        ========================================== */
+
+        document
+            .getElementById("backSettingsBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+
+        /* =========================================
+           PROFILE
+        ========================================== */
+
+        document
+            .getElementById("settingsProfileBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "profile.html";
+
+                }
+            );
+
+
+
+        /* =========================================
+           PRIVATE SPACE
+        ========================================== */
+
+        document
+            .getElementById(
+                "privateSpaceSettingsBtn"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    alert(
+                        "🔐 Private Space will be available in the next LinkVault upgrade."
+                    );
+
+                }
+            );
+
+
+
+        /* =========================================
+           RESET SETTINGS
+        ========================================== */
+
+        document
+            .getElementById("resetSettingsBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+
+                    const confirmReset =
+                        confirm(
+                            "Reset all LinkVault preferences on this device?"
+                        );
+
+
+                    if (!confirmReset) {
+
+                        return;
+
+                    }
+
+
+
+                    /* REMOVE SETTINGS */
+
+                    localStorage.removeItem(
+                        "linkvault_notifications"
+                    );
+
+
+                    localStorage.removeItem(
+                        "linkvault_save_confirmation"
+                    );
+
+
+                    localStorage.removeItem(
+                        "linkvault_dark_mode"
+                    );
+
+
+                    localStorage.removeItem(
+                        "linkvault_animations"
+                    );
+
+
+
+                    /* RELOAD DEFAULT SETTINGS */
+
+                    loadSettings();
+
+
+
+                    alert(
+                        "✅ LinkVault settings have been reset."
+                    );
+
+                }
+            );
+
+
+
+        /* =========================================
+           LOGOUT
+        ========================================== */
+
+        document
+            .getElementById("settingsLogoutBtn")
+            .addEventListener(
+                "click",
+                async () => {
+
+
+                    const confirmLogout =
+                        confirm(
+                            "Are you sure you want to logout?"
+                        );
+
+
+                    if (!confirmLogout) {
+
+                        return;
+
+                    }
+
+
+                    try {
+
+                        await signOut(auth);
+
+
+                        window.location.href =
+                            "index.html";
+
+                    }
+                    catch (error) {
+
+                        console.error(
+                            "❌ Logout error:",
+                            error
+                        );
+
+                    }
+
+                }
+            );
+
+    </script>
+
+
+</body>
+
+</html>

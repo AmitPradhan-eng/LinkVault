@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Forgot PIN - LinkVault</title>
+
+    <link rel="stylesheet" href="auth.css">
+
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>🔐 LinkVault</h1>
+
+        <h2>Forgot PIN?</h2>
+
+        <p>
+            Verify your LinkVault account to create
+            a new 4-digit PIN.
+        </p>
+
+        <input
+            type="email"
+            id="forgotPinEmail"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            id="forgotPinPassword"
+            placeholder="Account Password"
+        >
+
+        <button onclick="verifyForgotPin()">
+            Verify Account
+        </button>
+
+        <div id="newPinSection" style="display:none;">
+
+            <input
+                type="password"
+                id="newPin"
+                maxlength="4"
+                inputmode="numeric"
+                placeholder="New 4-digit PIN"
+            >
+
+            <input
+                type="password"
+                id="confirmNewPin"
+                maxlength="4"
+                inputmode="numeric"
+                placeholder="Confirm PIN"
+            >
+
+            <button onclick="resetPin()">
+                Create New PIN
+            </button>
+
+        </div>
+
+        <p>
+            <a href="pin.html">Back to PIN</a>
+        </p>
+
+    </div>
+
+
+    <script type="module" src="auth.js"></script>
+
+</body>
+
+</html>
